@@ -35,7 +35,7 @@ class ArticleSerializer(serializers.ModelSerializer):
     
     def get_featured_image(self, obj):
         request = self.context.get('request')
-        return request.build_absolute_uri(obj.get_featured_image.url) if obj.get_featured_image else ""
+        return request.build_absolute_uri(obj.featured_image.url) if obj.featured_image else ""
     
     def get_file(self, obj):
         request = self.context.get('request')
