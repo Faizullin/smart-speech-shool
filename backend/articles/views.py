@@ -29,7 +29,8 @@ class ArticleListPagination(PageNumberPagination):
 
 class ArticleFilter(django_filters.FilterSet):
     title = django_filters.CharFilter(lookup_expr='icontains')
-    subject = django_filters.CharFilter(field_name='subject__title', lookup_expr='icontains')
+    subject = django_filters.CharFilter(
+        field_name='subject__title', lookup_expr='icontains')
 
     class Meta:
         model = Article
@@ -39,12 +40,13 @@ class ArticleFilter(django_filters.FilterSet):
 class ArticleListView(ListAPIView):
     queryset = Article.published.all()
     serializer_class = ArticleSerializer
-    filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
+    filter_backends = [DjangoFilterBackend,
+                       filters.OrderingFilter, filters.SearchFilter]
     # filterset_class = ArticleFilter
     search_fields = ['id', 'title']
     ordering_fields = ['id', 'created_at', 'updated_at']
     ordering = ['-id']
-    
+
     pagination_class = ArticleListPagination
 
     authentication_classes = (JWTAuthentication,)
@@ -57,3 +59,8 @@ class ArticleRetrieveView(RetrieveAPIView):
 
     authentication_classes = (JWTAuthentication,)
     permission_classes = [permissions.IsAuthenticated, IsStudent]
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({"request": self.request})
+        return context

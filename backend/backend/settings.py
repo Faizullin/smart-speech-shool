@@ -287,3 +287,7 @@ else:
             'port': '6379',  # 6379,
             'db': 0, }
     }
+
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
