@@ -24,6 +24,8 @@ services:
       volumes:
         - ./nginx/conf.d:/etc/nginx/conf.d
         - /etc/letsencrypt:/etc/letsencrypt
+        - static_data:/app/static
+        - media_data:/app/media
       depends_on:
         - web
   django-q:
