@@ -1,7 +1,7 @@
 import * as React from 'react';
-import * as faceapi from 'face-api.js';
 import { FormattedMessage } from 'react-intl';
 import Loader from '../loader/Loader';
+import * as faceapi from 'face-api.js';
 
 export interface IFaceIdProps {
     detectLimit: number

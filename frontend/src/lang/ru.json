@@ -59,7 +59,7 @@
     "app.dashboard.results.show_feedback.label": "Показать обратную связь",
     "app.dashboard.results.stats.label": "Статистика",
     "app.dashboard.results.table.label": "Таблица",
-    "app.dashboard.alert.no_student.bold": "Нет, студент!",
+    "app.dashboard.alert.no_student.bold": "Не студент!",
     "app.dashboard.alert.no_student.description": "Пожалуйста, зарегистрируйтесь в качестве студента",
     "app.dashboard.alert.face_id.bold": "Нет идентификатора лица!",
     "app.dashboard.alert.face_id.description": "Пожалуйста, зарегистрируйте удостоверение личности лица.",
