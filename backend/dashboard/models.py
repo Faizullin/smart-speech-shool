@@ -62,13 +62,13 @@ def get_students_with_initial_test(exams_queryset=None):
         student.initial_score = student_item['results__total_marks']
         results__exam__subject__id = student_item['results__exam__subject__id']
         if student_item['results__exam__subject__id'] in data:
-            if student.initial_score > current_academic_config.high_group_total_min:
+            if student.initial_score > current_academic_config.assign_groups_theory_min:
                 data[results__exam__subject__id][0].append(student)
             else:
                 data[results__exam__subject__id][1].append(student)
         else:
             data[results__exam__subject__id] = [[], []]
-            if student.initial_score > current_academic_config.high_group_total_min:
+            if student.initial_score > current_academic_config.assign_groups_theory_min:
                 data[results__exam__subject__id] = [[student], []]
             else:
                 data[results__exam__subject__id] = [[], [student]]

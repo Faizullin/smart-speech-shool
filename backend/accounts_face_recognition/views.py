@@ -56,6 +56,7 @@ class FaceIdVerifyView(APIView):
         if not image_file:
             return Response({'error': 'Image file not provided.'}, status=status.HTTP_400_BAD_REQUEST)
 
+        student_me = request.student
         student = find_student_from_face(image_file)
         print("student", student)
         if not student:
@@ -66,9 +67,18 @@ class FaceIdVerifyView(APIView):
                 },
                 status=status.HTTP_200_OK
             )
-        return JsonResponse(
-            {
-                'success': student.user_id == request.user.pk,
-            },
-            status=status.HTTP_200_OK
-        )
+        elif student_me.pk != student.pk:
+            return Response(
+                {
+                    'success': False,
+                    'error': f"Not your face"
+                },
+                status=status.HTTP_403
+            )
+        else:
+            return Response(
+                {
+                    'success': student.user_id == request.user.pk,
+                },
+                status=status.HTTP_200_OK
+            )

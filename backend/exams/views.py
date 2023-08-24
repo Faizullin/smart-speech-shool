@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -25,14 +26,14 @@ class ExamListView(ListAPIView):
     permission_classes = [permissions.IsAuthenticated, IsStudent]
 
     def get_serializer_context(self):
-        student = Student.objects.get(user=self.request.user)
         context = super().get_serializer_context()
+        student = self.request.student
         context['request'] = self.request
         context['student'] = student
         return context
 
     def get_queryset(self):
-        student = Student.objects.get(user=self.request.user)
+        student = self.request.student
         if student.current_group:
             return Exam.objects.filter(Q(subject=student.current_group.subject) | Q(exam_type='i')).order_by('-id')
         else:
@@ -51,7 +52,7 @@ class QuizListView(ListAPIView):
         return context
 
     def get_queryset(self):
-        student = Student.objects.get(user_id=self.request.user.pk)
+        student = self.request.student
         exams = Exam.objects.filter(subject_group=student.current_group)
         return Quiz.objects.filter(exam__in=exams)
 
@@ -78,16 +79,21 @@ class QuizSubmitView(APIView):
 
     def post(self, request, pk):
         quiz = self.get_object(pk)
-        student = Student.objects.get(user=request.user)
+        student = request.student
         current_acacdemic_session = AcademicSession.objects.last()
         exam = quiz.exam
 
+        input_data = request.data
+        video_recording = input_data.get('record', None)
         existing_result = Result.objects.filter(exam=exam, student=student)
         if existing_result.exists():
             return Response({'success': False, 'message': 'You passed already tried a quiz! Please contact to teacher!'}, status=status.HTTP_400_BAD_REQUEST)
-
-        input_data = request.data
-        serializer = QuizSubmitSerializer(data=input_data)
+        if video_recording is None:
+            return Response({'success': False, 'message': 'No video record i provided!'}, status=status.HTTP_400_BAD_REQUEST)
+        serializer = QuizSubmitSerializer(data={
+            'record': video_recording,
+            'questions': json.loads(input_data.get('questions')),
+        })
         serializer.is_valid(raise_exception=True)
         validated_data = serializer.validated_data
 
@@ -97,8 +103,6 @@ class QuizSubmitView(APIView):
         # Iterate over each submitted question
         for submitted_question in validated_data['questions']:
             # Retrieve the corresponding question object
-            print("Data submitted_question",
-                  submitted_question['answers'], submitted_question)
 
             try:
                 question = questions_queryset.get(id=submitted_question['id'])
@@ -107,8 +111,6 @@ class QuizSubmitView(APIView):
             if question.type == 'c':
                 correct_answer_ids = question.answers.filter(
                     correct=True).values_list('id', flat=True)
-                print("CHECK", set([str(i) for i in correct_answer_ids]) == set(
-                    submitted_question['answers']), correct_answer_ids, submitted_question['answers'])
                 score = set([str(i) for i in correct_answer_ids]
                             ) == set(submitted_question['answers'])
                 if score:
@@ -138,14 +140,13 @@ class QuizSubmitView(APIView):
         score_percent = (total_correct_answers / total_questions_count) * 100
 
         if exam.exam_type == 'i':
-            results = Result.objects.create(
+            new_result = Result.objects.create(
                 student=student,
                 semester=current_acacdemic_session,
                 exam=exam,
                 theory_marks=score_percent,
             )
-            # student.hasInitial = True
-            student.save()
+            new_result.record.save(video_recording.name, video_recording)
             return Response({'success': True}, status=status.HTTP_200_OK)
 
         if not student.current_group:
@@ -158,14 +159,16 @@ class QuizSubmitView(APIView):
         if results.exists():
             result = results.last()
             result.theory_marks = score_percent
+            result.record.save(video_recording.name, video_recording)
             result.save()
         else:
-            result = Result.objects.create(
+            new_result = Result.objects.create(
                 semester=student.current_group.semester,
                 student=student,
                 exam=exam,
                 theory_marks=score_percent,
             )
+            new_result.record.save(video_recording.name, video_recording)
 
         return Response({'success': True}, status=status.HTTP_200_OK)
 
@@ -176,7 +179,7 @@ class ExamProjectRetrieveUpdateView(RetrieveUpdateAPIView):
     permission_classes = [permissions.IsAuthenticated, IsStudent]
 
     def get_queryset(self):
-        student = Student.objects.get(user_id=self.request.user.pk)
+        student = self.request.student
         return Exam.objects.filter(subject_group=student.current_group)
 
 
@@ -206,7 +209,7 @@ class QuizInititalMyView(APIView):
     permission_classes = [permissions.IsAuthenticated, IsStudent]
 
     def get(self, request):
-        student = Student.objects.get(user=request.user)
+        student = request.student
         exam = Exam.objects.filter(
             exam_type='i', subject_group=student.current_group)
         if exam.last():

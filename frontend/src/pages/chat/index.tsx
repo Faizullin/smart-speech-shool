@@ -17,7 +17,7 @@ interface IChat {
 }
 
 
-export interface IChattRoomsListSidebarProps {
+export interface IChatRoomsListSidebarProps {
     open: any,
     setOpen: any,
     onOpenChat: (event: any, chat?: IChatRoom) => any
@@ -41,7 +41,7 @@ const TriggerButton = ({ onClick }: { onClick: (data?: any) => void }) => {
     );
 }
 
-export function ChattRoomsListSidebar({ onOpenChat, chat_rooms, current_chat_room, open, setOpen }: IChattRoomsListSidebarProps) {
+export function ChatRoomsListSidebar({ onOpenChat, chat_rooms, current_chat_room, open, setOpen }: IChatRoomsListSidebarProps) {
     return (
         <>
             <div className='lg:hideen'>
@@ -148,17 +148,12 @@ export function ChattRoomsListSidebar({ onOpenChat, chat_rooms, current_chat_roo
 }
 
 
-
-
-
-
-
 export interface IChatIndexProps {
 }
 
 export default function ChatIndex(_: IChatIndexProps) {
     const dispatch = useAppDispatch()
-    const { current_chat_room, chat_rooms } = useAppSelector(state => state.chat)
+    const { current_chat_room, chat_rooms, current_chat_id } = useAppSelector(state => state.chat)
     const [mobileSidebarOpen, setMobileSidebarOpen] = React.useState<boolean>(false)
 
     const handleOpenChat = (event: any, chat?: IChat) => {
@@ -167,7 +162,14 @@ export default function ChatIndex(_: IChatIndexProps) {
             dispatch(setCurrentChatRoom(chat))
         } else {
             dispatch(fetchNewChatRoom()).then(_ => {
-                dispatch(fetchChatRoomsMy())
+                dispatch(fetchChatRoomsMy()).then(response => {
+                    if (response.type === fetchChatRoomsMy.fulfilled.toString()) {
+                        const arr = response.payload as IChatRoom[]
+                        if (arr.length > 0) {
+                            dispatch(setCurrentChatRoom(arr[arr.length - 1]))
+                        }
+                    }
+                })
             })
         }
     }
@@ -176,8 +178,15 @@ export default function ChatIndex(_: IChatIndexProps) {
         dispatch(fetchChatRoomsMy()).then(response => {
             if (response.type === fetchChatRoomsMy.fulfilled.toString()) {
                 const arr = response.payload as IChatRoom[]
-                if (arr.length > 0) {
-                    dispatch(setCurrentChatRoom(arr[0]))
+                if (current_chat_id !== null) {
+                    const r_index = arr.findIndex(item => item.id == current_chat_id)
+                    if (r_index !== -1) {
+                        dispatch(setCurrentChatRoom(arr[r_index]))
+                    }
+                } else if (current_chat_room === null) {
+                    if (arr.length > 0) {
+                        dispatch(setCurrentChatRoom(arr[0]))
+                    }
                 }
             }
         })
@@ -197,7 +206,7 @@ export default function ChatIndex(_: IChatIndexProps) {
                                     <ChatForm chat_room={current_chat_room} />
                                 </div>
                             </div>
-                            <ChattRoomsListSidebar
+                            <ChatRoomsListSidebar
                                 open={mobileSidebarOpen} setOpen={setMobileSidebarOpen}
                                 onOpenChat={handleOpenChat} chat_rooms={chat_rooms} current_chat_room={current_chat_room} />
                         </div>

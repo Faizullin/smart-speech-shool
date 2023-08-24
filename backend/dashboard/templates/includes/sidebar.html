@@ -29,7 +29,7 @@
                 </li>
                 <li data-username="Profile Dashboard Page" 
                     class="nav-item {% if 'dashboard:storage' in segment %} active {% endif %}">
-                    <a href="#" class="nav-link">
+                    <a href="{% url 'dashboard:storage' %}" class="nav-link">
                         <span class="pcoded-micon"><i class="feather icon-shop"></i></span>
                             <span class="pcoded-mtext">{{ _("Storage") }}</span></a>
                 </li>

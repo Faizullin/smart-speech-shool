@@ -14,6 +14,10 @@ from datetime import timedelta
 from pathlib import Path
 import os
 
+USE_DOTENV = True
+if USE_DOTENV:
+    from dotenv import load_dotenv
+    load_dotenv()
 
 USE_SPA = True
 USE_WS = os.getenv('USE_WS', 'False') == 'True'
@@ -34,7 +38,7 @@ DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = ['*']
 
-
+print(os.getenv('REDIS_URL'),os.getenv('REDIS_PORT'),os.getenv('REDIS_HOST'),)
 # Application definition
 
 INSTALLED_APPS = [
@@ -272,22 +276,12 @@ if USE_REDIS:
             'db': 0, }
     }
 else:
+    
     Q_CLUSTER = {
-        'name': 'myproject',
-        'workers':   4,
-        'recycle': 500,
-        'timeout': 60,
-        'compress': True,
-        'save_limit': 250,
-        'queue_limit': 500,
-        'cpu_affinity': 1,
-        'label': 'Django Q',
-        'redis': {
-            'host': '127.0.0.1',  # '127.0.0.1',
-            'port': '6379',  # 6379,
-            'db': 0, }
+        'name': 'default',
+        'connection': 'redis://127.0.0.1:6379/0',
     }
 
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT = True
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# SECURE_SSL_REDIRECT = True

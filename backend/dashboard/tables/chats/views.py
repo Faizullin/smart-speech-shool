@@ -8,6 +8,8 @@ from django_filters.views import FilterView
 
 from dashboard.get_context_processors import get_context
 from chats.models import ChatRoom, ChatMessage
+from chats.operations import send_ws_message
+from chats.serializers import ChatSendMessageSerializer
 
 from .forms import ChatForm, ChatSendForm
 from .tables import ChatTable, ChatFilter
@@ -76,8 +78,12 @@ def chat_start(request, pk):
         if form.is_valid():
             content = form.cleaned_data['msg']
             lang = form.cleaned_data['lang']
-            message = ChatMessage.objects.create(
+            chat_message = ChatMessage.objects.create(
                 msg=content, lang=lang, chat_room=chat_room, owner=request.user)
+            send_ws_message(
+                ChatSendMessageSerializer(chat_message).data,
+                chat_message.chat_room,
+            )
             return redirect(reverse('dashboard:chat_start', kwargs={'pk': chat_room.pk}))
     else:
         form = ChatSendForm()

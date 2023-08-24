@@ -118,7 +118,7 @@ def get_response(input_value: ChatMessage, language_code: str, user_id=None, rai
             return "Error: " + str(err)
 
 
-def get_chat_room_name(chat_room):
+def get_chat_room_name(chat_room) -> str:
     return 'chat_%s' % chat_room
 
 
@@ -159,7 +159,7 @@ def process_query(query, input_value: ChatMessage, user_id=None):
         output_raw_txt = output_raw_txt.replace('{', '{{')
         output_raw_txt = output_raw_txt.replace('}', '}}')
         user = User.objects.get(id=user_id)
-        student = Student.objects.get(user=user)
+        student = user.student
         context = {
             'student': student,
         }

@@ -38,8 +38,8 @@ class ResultListView(LoginRequiredMixin, tables.SingleTableMixin, FilterView):
 
     def get_queryset(self, *args, **kwargs):
         if isUserTeacher(self.request.user):
-            return get_teacher_students_results_queryset(self.request.user)
-        return Result.objects.all()
+            return get_teacher_students_results_queryset(self.request.user).order_by('-id')
+        return Result.objects.order_by('-id')
 
 
 @login_required()

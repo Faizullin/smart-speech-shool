@@ -6,6 +6,7 @@ import ChatService from '../../../services/ChatService';
 
 interface IInitialState {
     messages: IChatMessage[]
+    current_chat_id: string | null
     current_chat_room: IChatRoom | null
     chat_rooms: IChatRoom[]
     loading: boolean,
@@ -20,9 +21,12 @@ interface IInitialState {
     }
 }
 
+const LOCAL_STORAGE_CHAT_KEY = 'chat_id'
+const initChatId = localStorage.getItem(LOCAL_STORAGE_CHAT_KEY)
 const initialState: IInitialState = {
     messages: [],
     chat_rooms: [],
+    current_chat_id: initChatId,
     current_chat_room: null,
     loading: false,
     error: null,
@@ -137,6 +141,9 @@ const chatSlice = createSlice({
         },
         setCurrentChatRoom: (state, action) => {
             state.current_chat_room = action.payload
+            if(state.current_chat_room?.id) {
+                localStorage.setItem(LOCAL_STORAGE_CHAT_KEY, state.current_chat_room.id)
+            }
         },
     },
     extraReducers(builder) {
@@ -167,7 +174,6 @@ const chatSlice = createSlice({
         builder.addCase(fetchNewChatRoom.rejected, (state, { payload }) => {
             state.loading = false
             state.success = false
-            state.current_chat_room = initialState.current_chat_room
             state.errors = payload
         })
         builder.addCase(fetchChatRoomsMy.fulfilled, (state, { payload }) => {

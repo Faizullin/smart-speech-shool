@@ -40,3 +40,11 @@ class ArticleSerializer(serializers.ModelSerializer):
     def get_file(self, obj):
         request = self.context.get('request')
         return request.build_absolute_uri(obj.file.url) if obj.file else ""
+    
+    
+class SubjectFiltersSerializer(serializers.ModelSerializer):
+    articles_count = serializers.IntegerField(read_only=True)
+
+    class Meta:
+        model = Subject
+        fields = ['id', 'title', 'articles_count']

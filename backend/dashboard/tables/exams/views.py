@@ -97,7 +97,7 @@ def exam_stats(request, pk):
         student_result_queryset = student_item.results.filter(exam=exam)
         if student_result_queryset.exists():
             marks = student_result_queryset.last().total_marks
-            student_item.pass_status = 'Passed' if marks > current_academic_config.high_group_total_min else 'Failed'
+            student_item.pass_status = 'Passed' if marks > current_academic_config.assign_groups_theory_min else 'Failed'
             student_item.total_marks = marks
         else:
             student_item.pass_status = 'Absent'
@@ -106,7 +106,7 @@ def exam_stats(request, pk):
     exam_students_tried_count = exam_students_with_results_queryset.count()
     absent_count = exam_students_total_count - exam_students_tried_count
     passed_count = exam_students_with_results_queryset.filter(
-        results__total_marks__gt=current_academic_config.high_group_total_min).count()
+        results__total_marks__gt=current_academic_config.assign_groups_theory_min).count()
     failed_count = exam_students_tried_count - passed_count
 
     context = {

@@ -67,9 +67,11 @@ class ChatMessage(models.Model):
 
 
 class QuestionTicket(models.Model):
+    OPEN = 'o'
+    CLOSED = 'c'
     STATUS_CHOICES = (
-        ('o', 'Open'),
-        ('c', 'Closed'),
+        (OPEN, 'Open'),
+        (CLOSED, 'Closed'),
     )
 
     requested_chat_room = models.ForeignKey(
