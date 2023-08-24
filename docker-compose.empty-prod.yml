@@ -5,12 +5,14 @@ services:
           context: ./backend
           dockerfile: Dockerfile.prod
       restart: always
-      command: gunicorn backend.wsgi:application --bind 0.0.0.0:8000
+      command: python3 manage.py runserver 0.0.0.0:8000
       volumes:
           - static_data:/app/static
           - media_data:/app/media
       env_file:
           - ./.env
+      environment:
+        - DJANGO_SETTINGS_MODULE=backend.settings
       expose:
           - 8000
       depends_on:
