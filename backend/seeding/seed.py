@@ -9,7 +9,7 @@ def seed():
     random.seed(42)  # Set a seed for consistent data generation
 
     academic_config = AcademicConfig.objects.create(
-        email_enabled=0,
+        email_enabled=False,
     )
 
     groupAdmin = GroupFactory(
@@ -118,7 +118,7 @@ def seed():
             address=fake.address(),
             others=fake.text(),
             user=user,
-            current_group = random.choice(SubjectGroup.objects.all()),
+            current_group=random.choice(SubjectGroup.objects.all()),
         )
 
     exams = Exam.objects.all()
@@ -153,7 +153,7 @@ def seed():
         result=result,
     )
 
-    academic_config.email_enabled = 1
+    academic_config.email_enabled = True
     academic_config.save()
 
     print("Seed data created successfully.")

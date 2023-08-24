@@ -44,7 +44,7 @@ class Result(models.Model):
         blank=True,
     )
     checked = models.BooleanField(
-        default=False
+        default=False, null=False
     )
 
     class Meta:
