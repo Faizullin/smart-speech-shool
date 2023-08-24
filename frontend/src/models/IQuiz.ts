@@ -15,3 +15,7 @@ export interface IAnswer {
     correct: boolean,
     id: string,
 }
+export type IMarked = string[]
+export type IMarkedObj = {
+    [key: string]: IMarked;
+}

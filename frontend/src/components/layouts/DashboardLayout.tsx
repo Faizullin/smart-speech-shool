@@ -6,6 +6,8 @@ import Loader from '../loader/Loader';
 import { fetchUserData } from '../../redux/store/reducers/authSlice';
 import { fetchStudentData } from '../../redux/store/reducers/studentSlice';
 import { FormattedMessage } from 'react-intl';
+import Icon from '@mdi/react';
+import { mdiHome } from '@mdi/js';
 
 type Props = {
     children: ReactNode
@@ -90,6 +92,16 @@ const DashboardLayout = ({ children }: Props) => {
                                             </span>
                                         </div>
                                         <div className="mb-3"></div>
+                                        <div className="flex items-center space-x-3 font-semibold text-gray-900 text-xl leading-8">
+                                            <span className="text-green-500">
+                                                <Icon path={mdiHome} size={1} />
+                                            </span>
+                                            <span>
+                                                <Link to="/dashboard/profile">
+                                                    <FormattedMessage id="app.main.label" />
+                                                </Link>
+                                            </span>
+                                        </div>
                                         <div className="flex items-center space-x-3 font-semibold text-gray-900 text-xl leading-8">
                                             <span className="text-green-500">
                                                 <svg className="h-5 fill-current" xmlns="http://www.w3.org/2000/svg" fill="none"

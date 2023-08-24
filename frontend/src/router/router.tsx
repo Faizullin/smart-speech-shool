@@ -8,19 +8,16 @@ import ForgotPassword from '../pages/auth/ForgotPassword';
 import ForgotPasswordConfirm from "../pages/auth/ForgotPasswordConfirm";
 import ProfileIndex from "../pages/dashboard";
 import ProfileEdit from "../pages/dashboard/profile/ProfileEdit";
-// import FaceIdLogin from "../pages/face_id/FaceIdLogin";
-// import FaceIdTrain from "../pages/face_id/FaceIdTrain";
-// import FaceIdVerify from "../pages/face_id/FaceIdVerify";
 import StudentProtectedRoute from "./StudentProtectedRoute";
 import ExamIndex from "../pages/dashboard/exam";
 import ResultIndex from "../pages/dashboard/result";
-import QuizProcess from "../pages/quiz/QuizProcess";
 import HasCompletedFaceIdRoute from "./HasCompletedFaceIdRoute";
 import ArticleDetail from "../pages/article/ArticleDetail";
 import CertificateIndex from "../pages/dashboard/certificate";
 import { FormattedMessage } from "react-intl";
 import ChatIndex from "../pages/chat";
 import React from "react";
+import QuizProcess1 from "../pages/quiz/QuizProcess1";
 
 
 const FaceIdLogin = React.lazy(() => import("../pages/face_id/FaceIdLogin"));
@@ -167,7 +164,7 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <HasCompletedFaceIdRoute forRoute="/quiz/">
-              <QuizProcess />
+              <QuizProcess1 />
             </HasCompletedFaceIdRoute>
           </ProtectedRoute>
         ),

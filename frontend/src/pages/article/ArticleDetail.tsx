@@ -6,6 +6,7 @@ import Layout from '../../components/layouts/Layout';
 import Sidebar, { TriggerButton } from '../../components/sidebar/Sidebar';
 import Breadcrumbs from '../../components/Breadcrumbs';
 import FileViewer from '../../components/article/FileViewer';
+import { setFilters } from '../../redux/store/reducers/articleFilterSlice';
 
 export interface IArticleDetailProps {
 }
@@ -22,6 +23,13 @@ export default function ArticleDetail(_: IArticleDetailProps) {
             dispatch(fetchArticleDetail({ id }))
         }
     }, [])
+    React.useEffect(() => {
+        if (article_payload && article_payload.subject) {
+            dispatch(setFilters({
+                subjects: [article_payload.subject]
+            }))
+        }
+    }, [article_payload])
 
     return (
         <Layout>

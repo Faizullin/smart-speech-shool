@@ -1,10 +1,8 @@
 import React from "react";
-import { IQuestion } from "../../models/IQuiz";
+import { IMarked, IQuestion } from "../../models/IQuiz";
 import 'regenerator-runtime/runtime';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { Lang } from "../../lang/LangConfig";
-
-export type IMarked = string[]
 
 interface Props {
     index: number

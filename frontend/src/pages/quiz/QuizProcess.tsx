@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ExamService from '../../services/ExamService';
 import { useNavigate, useParams } from 'react-router-dom';
-import { IQuestion } from '../../models/IQuiz';
+import { IMarked, IMarkedObj, IQuestion } from '../../models/IQuiz';
 import PrimaryButton from '../../components/form/auth/PrimaryButton';
 import { FormattedMessage } from 'react-intl';
 import { Pagination } from '../../components/table/Table';
@@ -10,7 +10,7 @@ import SecondaryButton from '../../components/form/auth/SecondaryButton';
 import { AxiosError } from 'axios';
 import 'regenerator-runtime/runtime';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-import QuestionItem, { IMarked } from '../../components/quiz/QuestionItem';
+import QuestionItem from '../../components/quiz/QuestionItem';
 import { ILangOption, Lang } from '../../lang/LangConfig';
 
 
@@ -21,10 +21,6 @@ export interface IQuizProcessProps {
 interface IQuizConfig {
     paginted: boolean,
     lazy: boolean,
-}
-
-type IMarkedObj = {
-    [key: string]: IMarked;
 }
 
 const languageOptions: ILangOption[] = [
@@ -44,7 +40,6 @@ export default function QuizProcess(_: IQuizProcessProps) {
     const [questions, setQuestions] = React.useState<IQuestion[]>([])
     const [marked, setMarked] = React.useState<IMarkedObj>({})
     const [currentQuestionPage, setCurrentQuestionPage] = React.useState<number>(0)
-    const recordVideoRef = React.useRef<HTMLVideoElement | null>(null);
     const quiz_id = params.id
 
 
@@ -149,14 +144,25 @@ export default function QuizProcess(_: IQuizProcessProps) {
         }
     }, [quizConfig.lazy])
 
+
+
+
     React.useEffect(() => {
         console.log("Marked change ", marked)
     }, [marked])
-
     React.useEffect(() => {
-        // const currentQuestion = questions[currentQuestionPage]
         resetTranscript()
     }, [currentQuestionPage])
+    React.useEffect(() => {
+        if (selectedLanguage) {
+            SpeechRecognition.stopListening().then(() => {
+                SpeechRecognition.startListening({
+                    continuous: true,
+                    language: selectedLanguage,
+                })
+            })
+        }
+    }, [selectedLanguage])
     React.useEffect(() => {
         if (selectedLanguage) {
             SpeechRecognition.stopListening().then(() => {
@@ -171,7 +177,6 @@ export default function QuizProcess(_: IQuizProcessProps) {
     return (
         <QuizLayout listening={listening} onMicroClick={() => { }}>
             <section id='blog'>
-                <video ref={recordVideoRef} autoPlay muted />
                 <div className="container mx-auto" data-aos="fade-up">
                     <div className="pt-5">
                         {

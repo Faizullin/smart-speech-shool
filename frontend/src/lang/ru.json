@@ -119,5 +119,7 @@
     "app.practical.submit.pl_submit_pdf.label": "Пожалуйста, отправьте PDF -файл",
     "app.chat.new_chat.label": "Новый чат",
     "app.read.label": "Читать",
-    "app.watch.label": "Смотреть"
+    "app.watch.label": "Смотреть",
+    "app.answer.label": "Отвечать",
+    "app.main.label": "Главная"
 }

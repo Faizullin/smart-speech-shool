@@ -14,11 +14,12 @@ export default class ExamService {
     static async fetchQuestions(id: string): Promise<AxiosResponse<IQuestion[]>> {
         return $api.get<IQuestion[]>(`/quizzes/${id}/questions/`) //.then(response => response.data)
     }
-    static async fetchSubmitQuiz(id: string, data: any): Promise<AxiosResponse<any>> {
+    static async fetchSubmitQuiz(id: string, data: FormData): Promise<AxiosResponse<any>> {
+        console.log(data.get('record'))
         return $api.post<any>(`/quizzes/${id}/submit/`, data)
     }
-    static async fetchSubmitProjectPractical(data: any): Promise<AxiosResponse<any>> {
-        return $api.post<any>(`/projects/submit/`, data)
+    static async fetchSubmitProjectPractical(data: FormData): Promise<AxiosResponse<any>> {
+        return $api.post<any>(`/projects/submit/`, data,)
     }
 
     static async fetchExamsMy(): Promise<AxiosResponse<any>> {
@@ -42,7 +43,7 @@ export default class ExamService {
     }
 
     static async fetchRequestCertificateSubmit(data?: any): Promise<AxiosResponse<any>> {
-        return $api.post<any>('/certificates/submit/',data)
+        return $api.post<any>('/certificates/submit/', data)
     }
     static async fetchCertificates(): Promise<AxiosResponse<ICertificate[]>> {
         return $api.get<ICertificate[]>('/certificates/my/')
