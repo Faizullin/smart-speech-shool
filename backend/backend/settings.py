@@ -14,7 +14,7 @@ from datetime import timedelta
 from pathlib import Path
 import os
 
-USE_DOTENV = True
+USE_DOTENV = False
 if USE_DOTENV:
     from dotenv import load_dotenv
     load_dotenv()
