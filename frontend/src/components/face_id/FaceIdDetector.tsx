@@ -35,7 +35,7 @@ export default function FaceIdDetector({ detectLimit, onDetect, onFullDetect, on
 
     React.useEffect(() => {
         const loadModels = async () => {
-            const MODEL_URL = import.meta.env.BASE_URL + '/models'
+            const MODEL_URL = "https://cdn.jsdelivr.net/gh/cgarciagl/face-api.js@0.22.2/weights" //import.meta.env.BASE_URL + '/models'
             Promise.all([
                 faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
                 faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
