@@ -169,7 +169,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
-FACE_DETECT_MODEL_ROOT = Path.joinpath(BASE_DIR, 'static_models')
 STATIC_ROOT = Path.joinpath(BASE_DIR, 'static')
 MEDIA_ROOT = Path.joinpath(BASE_DIR, 'media')
 

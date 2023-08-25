@@ -24,7 +24,7 @@ class IsStudent(permissions.BasePermission):
     def has_permission(self, request, view,):
         query = request.user.groups.filter(name='student')
         if query.exists():
-            request.user.group_name == "student"
+            request.user.group_name = "student"
             request.student = Student.objects.get(user=request.user)
             return True
         return False

@@ -22,7 +22,6 @@ class FaceIdRetrainView(APIView):
 
     def post(self, request):
         results = retrain_faces()
-
         return Response({'success': results}, status=status.HTTP_201_CREATED)
 
 
@@ -35,7 +34,6 @@ class FaceIdLoginView(APIView):
             return Response({'error': 'Image file not provided.'}, status=status.HTTP_400_BAD_REQUEST)
 
         student = find_student_from_face(image_file)
-        print("student", student)
         if not student:
             return Response({'error': f"Student not found. {student}"}, status=status.HTTP_200_OK)
         user = student.user
@@ -58,7 +56,6 @@ class FaceIdVerifyView(APIView):
 
         student_me = request.student
         student = find_student_from_face(image_file)
-        print("student", student)
         if not student:
             return Response(
                 {
