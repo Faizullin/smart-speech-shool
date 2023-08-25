@@ -38,7 +38,7 @@ class ResultWithFeedbackSerializer(serializers.ModelSerializer):
         if certificte_queryset.exists():
             return False
         else:
-            return obj.total_marks > get_current_academic_config().theory_pass_min
+            return obj.total_marks > get_current_academic_config().assign_groups_theory_min
 
 
 class FeedbackSerializer(serializers.ModelSerializer):

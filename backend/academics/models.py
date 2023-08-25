@@ -56,5 +56,5 @@ class AcademicConfig(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
-def get_current_academic_config():
+def get_current_academic_config() -> AcademicConfig:
     return AcademicConfig.objects.last()
