@@ -12,7 +12,10 @@ from chats.models import QuestionTicket
 from .forms import QuestionTicketForm
 from .tables import QuestionTicketTable, QuestionTicketFilter
 
-class QuestionTicketListView(LoginRequiredMixin, tables.SingleTableMixin, FilterView):
+from dashboard.decorators import user_admin_or_teacher_required
+from dashboard.mixins import UserAdminOrTeacherRequiredMixin
+
+class QuestionTicketListView(LoginRequiredMixin, UserAdminOrTeacherRequiredMixin, tables.SingleTableMixin, FilterView):
     model = QuestionTicket
     table_class = QuestionTicketTable
     template_name = 'dashboard/tables/question_tickets/index.html'
@@ -21,7 +24,7 @@ class QuestionTicketListView(LoginRequiredMixin, tables.SingleTableMixin, Filter
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        context = get_context(context=context, segment='dashboard:questionticket_list')
+        context = get_context(self.request, context=context, segment='dashboard:questionticket_list')
         context.update({
             "filterset": QuestionTicketFilter(self.request.GET, queryset = self.get_queryset()),
         })
@@ -30,7 +33,8 @@ class QuestionTicketListView(LoginRequiredMixin, tables.SingleTableMixin, Filter
     def get_queryset(self, *args, **kwargs):
         return QuestionTicket.objects.all()
 
-@login_required()
+@login_required
+@user_admin_or_teacher_required
 def questionticket_create(request):
     if request.method == 'POST':
         form = QuestionTicketForm(request.POST)
@@ -42,7 +46,8 @@ def questionticket_create(request):
         form = QuestionTicketForm()
     return render(request, 'dashboard/tables/form_base.html', {'form': form,'edit_url': reverse('dashboard:questionticket_create')})
 
-@login_required()
+@login_required
+@user_admin_or_teacher_required
 def questionticket_edit(request, pk):
     questionticket = get_object_or_404(QuestionTicket, pk=pk)
     if request.method == 'POST':
@@ -56,6 +61,7 @@ def questionticket_edit(request, pk):
     return render(request, 'dashboard/tables/form_base.html', {'form': form, 'edit_url': reverse('dashboard:questionticket_edit', kwargs={'pk': questionticket.pk}) })
 
 @login_required
+@user_admin_or_teacher_required
 def questionticket_delete(request, pk):
     questionticket = get_object_or_404(QuestionTicket, pk=pk)
     if request.method == 'POST':

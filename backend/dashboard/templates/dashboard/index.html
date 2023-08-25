@@ -51,7 +51,7 @@
                         <div class="row">
                           <div class="col-sm-6">
                             <div class="card">
-                              <a class="card-body" href="{% url 'dashboard:student_list' %}">
+                              <a class="card-body" href="{% if request.user.group_name == 'teacher'  %}{% url 'dashboard:my_student_list' %}{% else %}{% url 'dashboard:student_list' %}{% endif %}">
                                 <div class="row">
                                   <div class="col mt-0">
                                     <h5 class="card-title">Students</h5>
@@ -93,7 +93,7 @@
                                     </div>
                                   </div>
                                 </div>
-                                <h1 class="mt-1 mb-3">{{ unchecked_results_cound }}</h1>
+                                <h1 class="mt-1 mb-3">{{ unchecked_results_count }}</h1>
                                 {% comment %} <div class="mb-0">
                                   <span class="text-success"><i class="mdi mdi-arrow-bottom-right"></i> 5.25%</span>
                                   <span class="text-muted">Since last week</span>

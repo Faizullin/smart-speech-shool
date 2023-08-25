@@ -8,35 +8,38 @@ from django.conf import settings
 from django.http import Http404, JsonResponse
 from django.core.files.storage import default_storage
 
-from .forms import LoginForm, UploadFileForm
-from .get_context_processors import *
 from academics.models import AcademicConfig
 from chats.models import QuestionTicket
 from results.models import Result
 from students.models import Student
+from accounts.permissions import isUserTeacher
+from .models import get_teacher_students_queryset, get_teacher_students_results_queryset
+from .decorators import user_admin_or_teacher_required, user_admin_required
 from dashboard.tables.academics_config.forms import AcademicConfigForm
+from .forms import LoginForm, UploadFileForm
+from .get_context_processors import *
 # Create your views here.
 
 
 @login_required
+@user_admin_or_teacher_required
 def dashboard_index(request):
     last_academic_config = AcademicConfig.objects.last()
-
-    context = get_context(segment='dashboard:index')
+    context = get_context(request, segment='dashboard:index')
     context.update({
         'question_tickets': QuestionTicket.objects.filter(status=QuestionTicket.OPEN).order_by('-id')[:10],
-        'unchecked_results_cound': Result.objects.filter(checked=False).count(),
-        'students_count': Student.objects.count(),
-        'no_feedback_count': Result.objects.filter(feedback__isnull=True).count(),
+        'unchecked_results_count': get_teacher_students_results_queryset(request.user).count() if isUserTeacher(request.user) else Result.objects.filter(checked=False).count(),
+        'students_count': get_teacher_students_queryset(request.user).count() if isUserTeacher(request.user) else Student.objects.count(),
+        'no_feedback_count': get_teacher_students_results_queryset(request.user).filter(feedback__isnull=True).count() if isUserTeacher(request.user) else Result.objects.filter(feedback__isnull=True).count(),
         'last_config_form': AcademicConfigForm(instance=last_academic_config)
     })
     return render(request, 'dashboard/index.html', context)
 
 
 @login_required
+@user_admin_or_teacher_required
 def dashboard_profile(request):
-    user_groups = request.user.groups.all()
-    return render(request, 'dashboard/profile.html', get_context(segment='dashboard:profile', context={'user_groups': user_groups}),)
+    return render(request, 'dashboard/profile.html', get_context(request, segment='dashboard:profile',),)
 
 
 def calculate_folder_size(folder_path):
@@ -49,15 +52,13 @@ def calculate_folder_size(folder_path):
 
 
 @login_required
+@user_admin_required
 def dashboard_storage(request):
     media_root = settings.MEDIA_ROOT
     relative_path = request.GET.get('path', '')
-
-    # Ensure the provided path is within the media directory
     absolute_path = default_storage.path(relative_path)
     if not str(absolute_path).startswith(str(media_root)):
         raise Http404("Invalid path")
-
     context = {}
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
@@ -89,7 +90,8 @@ def dashboard_storage(request):
                 'type': 'File',
                 'size': folder_size,
             })
-    context = get_context(context=context, segment='dashboard:storage')
+    context = get_context(request, context=context,
+                          segment='dashboard:storage')
     context.update({
         "media_list": media_list,
         "form":  form,
@@ -99,18 +101,17 @@ def dashboard_storage(request):
 
 
 @login_required
+@user_admin_required
 def storage_delete(request):
     if request.method == "POST":
         file_path = request.GET.get("path", "")
         absolute_path = default_storage.path(file_path)
-
         if str(absolute_path).startswith(str(settings.MEDIA_ROOT)):
             try:
                 default_storage.delete(absolute_path)
             except Exception as e:
                 print(e)
                 messages.error(request, 'Deleted succesfully.')
-
             return redirect(request.META.get('HTTP_REFERER'))
     return JsonResponse({"deleted": False})
 

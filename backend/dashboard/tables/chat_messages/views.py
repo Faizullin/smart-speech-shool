@@ -12,7 +12,10 @@ from chats.models import ChatMessage
 from .forms import ChatMessageForm
 from .tables import ChatMessageTable, ChatMessageFilter
 
-class ChatMessageListView(LoginRequiredMixin, tables.SingleTableMixin, FilterView):
+from dashboard.decorators import user_admin_or_teacher_required
+from dashboard.mixins import UserAdminOrTeacherRequiredMixin
+
+class ChatMessageListView(LoginRequiredMixin, UserAdminOrTeacherRequiredMixin, tables.SingleTableMixin, FilterView):
     model = ChatMessage
     table_class = ChatMessageTable
     template_name = 'dashboard/tables/chat_messages/index.html'
@@ -21,7 +24,7 @@ class ChatMessageListView(LoginRequiredMixin, tables.SingleTableMixin, FilterVie
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        context = get_context(context=context, segment='dashboard:chatmessage_list')
+        context = get_context(self.request, context=context, segment='dashboard:chatmessage_list')
         context.update({
             "filterset": ChatMessageFilter(self.request.GET, queryset = self.get_queryset()),
         })
@@ -30,7 +33,8 @@ class ChatMessageListView(LoginRequiredMixin, tables.SingleTableMixin, FilterVie
     def get_queryset(self, *args, **kwargs):
         return ChatMessage.objects.all()
 
-@login_required()
+@login_required
+@user_admin_or_teacher_required
 def chatmessage_create(request):
     if request.method == 'POST':
         form = ChatMessageForm(request.POST)
@@ -42,7 +46,8 @@ def chatmessage_create(request):
         form = ChatMessageForm()
     return render(request, 'dashboard/tables/form_base.html', {'form': form,'edit_url': reverse('dashboard:chatmessage_create')})
 
-@login_required()
+@login_required
+@user_admin_or_teacher_required
 def chatmessage_edit(request, pk):
     chatmessage = get_object_or_404(ChatMessage, pk=pk)
     if request.method == 'POST':
@@ -56,6 +61,7 @@ def chatmessage_edit(request, pk):
     return render(request, 'dashboard/tables/form_base.html', {'form': form, 'edit_url': reverse('dashboard:chatmessage_edit', kwargs={'pk': chatmessage.pk}) })
 
 @login_required
+@user_admin_or_teacher_required
 def chatmessage_delete(request, pk):
     chatmessage = get_object_or_404(ChatMessage, pk=pk)
     if request.method == 'POST':

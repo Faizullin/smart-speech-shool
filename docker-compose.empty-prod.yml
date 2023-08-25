@@ -5,7 +5,7 @@ services:
           context: ./backend
           dockerfile: Dockerfile.prod
       restart: always
-      command: python3 manage.py runserver 0.0.0.0:8000
+      command: daphne backend.asgi:application -b 0.0.0.0 -p 8000 #python3 manage.py runserver 0.0.0.0:8000
       volumes:
           - static_data:/app/static
           - media_data:/app/media

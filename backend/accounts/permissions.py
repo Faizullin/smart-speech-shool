@@ -3,11 +3,11 @@ from students.models import Student
 
 
 def isUserAdmin(user):
-    return user.groups.filter(name__in=['admin']).exists()
+    return user.group_name == "admin"
 
 
 def isUserTeacher(user):
-    return user.groups.filter(name__in=['teacher']).exists()
+    return user.group_name == "teacher"
 
 
 class IsAdmin(permissions.BasePermission):
@@ -22,8 +22,9 @@ class IsTeacher(permissions.BasePermission):
 
 class IsStudent(permissions.BasePermission):
     def has_permission(self, request, view,):
-        query = request.user.groups.filter(name__in=['student'])
+        query = request.user.groups.filter(name='student')
         if query.exists():
+            request.user.group_name == "student"
             request.student = Student.objects.get(user=request.user)
             return True
         return False

@@ -14,8 +14,11 @@ from chats.serializers import ChatSendMessageSerializer
 from .forms import ChatForm, ChatSendForm
 from .tables import ChatTable, ChatFilter
 
+from dashboard.decorators import user_admin_or_teacher_required
+from dashboard.mixins import UserAdminOrTeacherRequiredMixin
 
-class ChatListView(LoginRequiredMixin, tables.SingleTableMixin, FilterView):
+
+class ChatListView(LoginRequiredMixin, UserAdminOrTeacherRequiredMixin, tables.SingleTableMixin, FilterView):
     model = ChatRoom
     table_class = ChatTable
     template_name = 'dashboard/tables/chats/index.html'
@@ -24,7 +27,7 @@ class ChatListView(LoginRequiredMixin, tables.SingleTableMixin, FilterView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        context = get_context(context=context, segment='dashboard:chat_list')
+        context = get_context(self.request, context=context, segment='dashboard:chat_list')
         context.update({
             "filterset": ChatFilter(self.request.GET, queryset=self.get_queryset()),
         })
@@ -34,7 +37,8 @@ class ChatListView(LoginRequiredMixin, tables.SingleTableMixin, FilterView):
         return ChatRoom.objects.all()
 
 
-@login_required()
+@login_required
+@user_admin_or_teacher_required
 def chat_create(request):
     if request.method == 'POST':
         form = ChatForm(request.POST)
@@ -47,7 +51,8 @@ def chat_create(request):
     return render(request, 'dashboard/tables/form_base.html', {'form': form, 'edit_url': reverse('dashboard:chat_create')})
 
 
-@login_required()
+@login_required
+@user_admin_or_teacher_required
 def chat_edit(request, pk):
     chat = get_object_or_404(ChatRoom, pk=pk)
     if request.method == 'POST':
@@ -62,6 +67,7 @@ def chat_edit(request, pk):
 
 
 @login_required
+@user_admin_or_teacher_required
 def chat_delete(request, pk):
     chat = get_object_or_404(ChatRoom, pk=pk)
     if request.method == 'POST':
@@ -71,6 +77,7 @@ def chat_delete(request, pk):
 
 
 @login_required
+@user_admin_or_teacher_required
 def chat_start(request, pk):
     chat_room = get_object_or_404(ChatRoom, pk=pk)
     if request.method == 'POST':
@@ -94,10 +101,11 @@ def chat_start(request, pk):
         'chat_messages': chat_messages,
         'form': form,
     }
-    context = get_context(context, 'dashboard:chat_list')
+    context = get_context(request, context, 'dashboard:chat_list')
     return render(request, 'dashboard/tables/chats/chat.html', context)
 
 @login_required
+@user_admin_or_teacher_required
 def chat_status_change(request, pk):
     chat_room = get_object_or_404(ChatRoom, pk=pk)
     chat_room.status = ChatRoom.OPEN if chat_room.status == ChatRoom.CLOSED else ChatRoom.CLOSED
