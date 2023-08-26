@@ -19,7 +19,7 @@ if USE_DOTENV:
     from dotenv import load_dotenv
     load_dotenv()
 
-USE_SPA = True
+USE_SPA = os.getenv('USE_SPA', 'True') == 'True'
 USE_WS = os.getenv('USE_WS', 'False') == 'True'
 USE_REDIS = os.getenv('USE_REDIS', 'False') == 'True'
 
