@@ -18,6 +18,8 @@ import { IFeedback } from '../../../models/IFeedback';
 import $api from '../../../http';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
+import { openErrorModal } from '../../../redux/store/reducers/errorModalSlice';
+import { useAppDispatch } from '../../../hooks/redux';
 
 export interface IResultIndexProps {
 }
@@ -62,6 +64,7 @@ const export_formats = [
   }
 ]
 const TableTab: React.FC<{ intl: IntlShape }> = ({ intl }) => {
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const [results, setResults] = React.useState<any[]>([])
   const [showFeedback, setShowFeedback] = React.useState<boolean>(false)
@@ -72,7 +75,10 @@ const TableTab: React.FC<{ intl: IntlShape }> = ({ intl }) => {
       setShowFeedback(true)
     }).catch(error => {
       if (error.response.status === 404) {
-        alert("Error: No feedback")
+        dispatch(openErrorModal({
+          status: 404,
+          message: "No feedback!",
+        }))
       }
     })
   }

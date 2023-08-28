@@ -5,6 +5,8 @@ import { IMarkedObj, IQuestion } from '../../models/IQuiz';
 import Loader from '../loader/Loader';
 import { useNavigate, useParams } from 'react-router-dom';
 import ExamService from '../../services/ExamService';
+import { openErrorModal } from '../../redux/store/reducers/errorModalSlice';
+import { useAppDispatch } from '../../hooks/redux';
 
 export interface IQuizSubmitPreviewModalProps {
     show: boolean
@@ -16,6 +18,7 @@ export interface IQuizSubmitPreviewModalProps {
 }
 
 export default function QuizSubmitPreviewModal({ show, setShow, payload, questions, recordedChunks, onConvertStart }: IQuizSubmitPreviewModalProps) {
+    const dispatch = useAppDispatch()
     const params = useParams()
     const navigate = useNavigate()
     const [videoReady, setVideoReady] = React.useState<boolean>(false)
@@ -39,8 +42,8 @@ export default function QuizSubmitPreviewModal({ show, setShow, payload, questio
         })
         console.log(videoData, recordedChunks,)
         formData.append('questions', JSON.stringify(data.questions))
-        formData.append('record', videoData,'record.mp4')
-        
+        formData.append('record', videoData, 'record.mp4')
+
         ExamService.fetchSubmitQuiz(quiz_id, formData).then(_ => {
             sessionStorage.clear()
             handleClose()
@@ -49,11 +52,14 @@ export default function QuizSubmitPreviewModal({ show, setShow, payload, questio
                 window.location.reload()
             }, 100)
         }).catch(error => {
-            if(error.response) {
-                alert("Error:  " + error.response.data.message)
-            } else {
-                console.error("Error:  " + error)
-            }  
+            if (error.response.status) {
+                dispatch(openErrorModal({
+                    status: error.response.status,
+                    message: error.response?.data?.message || "",
+                }))
+                return;
+            }
+            console.error("Error:  " + error)
         })
     }
     const handleClose = () => {
@@ -69,7 +75,7 @@ export default function QuizSubmitPreviewModal({ show, setShow, payload, questio
     const handleConvertVideo = () => {
         setVideoReady(false)
         setConvertLoading(true)
-        if(onConvertStart) {
+        if (onConvertStart) {
             onConvertStart()
         }
         convertProcessing(recordedChunks).then((res) => {
@@ -191,7 +197,7 @@ export default function QuizSubmitPreviewModal({ show, setShow, payload, questio
                                     disabled={videoReady}
                                     className="bg-blue-500 mr-6 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                 >
-                                    <FormattedMessage id="app.convert.label" defaultMessage="Convert"/>
+                                    <FormattedMessage id="app.convert.label" defaultMessage="Convert" />
                                 </button>
                                 <button
                                     type="button"

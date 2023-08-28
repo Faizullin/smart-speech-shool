@@ -16,13 +16,13 @@ export default function Herobar() {
                             <FormattedMessage
                                 id="app.herobar.welcome.to"
                             />
-                            <span>{import.meta.env.VITE_APP_NAME}</span></h2>
+                            <span className="block">{import.meta.env.VITE_APP_NAME}</span></h2>
                         <p>
                             <FormattedMessage
                                 id="app.herobar.welcome.info"
                             />
                         </p>
-                        <div className="flex justify-center lg:justify-start">
+                        <div className="flex justify-center">
                             <Link to="/" className="btn-get-started">
                                 <FormattedMessage
                                     id="app.herobar.welcome.get_started"
@@ -40,7 +40,7 @@ export default function Herobar() {
                 <div className="container mx-auto sm:px-4 relative">
                     <div className="flex flex-wrap gy-4 mt-12">
 
-                        <div className="xl:w-1/3 md:w-1/2 w-full pr-4 pl-4 mt-5" data-aos="fade-up" data-aos-delay="100">
+                        <div className="xl:w-1/2 md:w-1/2 w-full pr-4 pl-4 mt-5" data-aos="fade-up" data-aos-delay="100">
                             <div className="icon-box">
                                 <div className="icon"><i className="bi bi-easel"></i></div>
                                 <h4 className="title">
@@ -53,20 +53,7 @@ export default function Herobar() {
                             </div>
                         </div>
 
-                        <div className="xl:w-1/3 md:w-1/2 w-full pr-4 pl-4 mt-5" data-aos="fade-up" data-aos-delay="200">
-                            <div className="icon-box">
-                                <div className="icon"><i className="bi bi-gem"></i></div>
-                                <h4 className="title">
-                                    <a href={`${base_url}/s/dashboard/`} className="stretched-link">
-                                        <FormattedMessage
-                                            id="app.herobar.role.teacher"
-                                        />
-                                    </a>
-                                </h4>
-                            </div>
-                        </div>
-
-                        <div className="xl:w-1/3 md:w-1/2 w-full pr-4 pl-4 mt-5" data-aos="fade-up" data-aos-delay="300">
+                        <div className="xl:w-1/2 md:w-1/2 w-full pr-4 pl-4 mt-5" data-aos="fade-up" data-aos-delay="300">
                             <div className="icon-box">
                                 <div className="icon"><i className="bi bi-geo-alt"></i></div>
                                 <h4 className="title">

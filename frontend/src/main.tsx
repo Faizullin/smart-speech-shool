@@ -8,6 +8,7 @@ import './assets/main'
 import { IntlProvider } from 'react-intl';
 import LangConfig from './lang/LangConfig';
 import { RouterProvider } from 'react-router-dom';
+import ErrorDetailModal from './components/modal/ErrorDetailModal';
 
 
 const langData = new LangConfig().getLangConfig()
@@ -18,6 +19,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       locale={langData.lang} defaultLocale="kk" messages={langData.messages}
        >
       <Provider store={store}>
+        <ErrorDetailModal />
         <RouterProvider router={router} />
       </Provider>
     </IntlProvider>
