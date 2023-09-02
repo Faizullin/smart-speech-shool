@@ -96,6 +96,7 @@
     "app.watch.label": "Watch",
     "app.answer.label": "Answer",
     "app.main.label": "Main",
+    "app.error.label": "Error",
     "app.dashboard.member_since.label": "Member Since",
     "app.dashboard.current_group.label": "Current Group",
     "app.dashboard.scheme.label": "Scheme",

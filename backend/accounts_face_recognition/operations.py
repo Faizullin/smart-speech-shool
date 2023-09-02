@@ -8,7 +8,7 @@ from django.core.files import File
 from students.models import Student  
 
 PATH = 'accounts_face_recognition/'
-MODEL_OUTPUT = PATH + "data/models/" + 'model1.clf'
+MODEL_OUTPUT = PATH + "model_data/models/" + 'model1.clf'
 DATASET_PATH = 'media/uploads/face_train/'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
@@ -79,6 +79,12 @@ def train(train_dir, model_save_path=None, n_neighbors=None, knn_algo='ball_tree
         else:
             knn_clf = neighbors.KNeighborsClassifier(n_neighbors=n_neighbors, algorithm=knn_algo, weights='distance')
 
+        print("Train data",len(X),len(y))
+        if len(X) == 0 or len(y) == 0:
+            if os.path.exists(model_save_path):
+                os.remove(model_save_path)
+            print("end")
+            return False, "Clean successfull"
         knn_clf.fit(X, y)
 
         # Save the trained KNN classifier
@@ -96,7 +102,9 @@ def predict(rgb_frame, knn_clf=None, model_path=None, distance_threshold=0.5):
         raise Exception("Must supply knn classifier either thourgh knn_clf or model_path")
 
     # Load a trained KNN model (if one was passed in)
-    if knn_clf is None:
+    if knn_clf is None and model_path:
+        if not os.path.exists(model_path):
+            return []
         with open(model_path, 'rb') as f:
             knn_clf = pickle.load(f)
 

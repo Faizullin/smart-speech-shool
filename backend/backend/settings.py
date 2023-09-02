@@ -38,7 +38,7 @@ DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = ['*']
 
-print(os.getenv('REDIS_URL'),os.getenv('REDIS_PORT'),os.getenv('REDIS_HOST'),)
+print(USE_REDIS, os.getenv('REDIS_URL'),os.getenv('REDIS_PORT'),os.getenv('REDIS_HOST'), DEBUG, USE_SPA)
 # Application definition
 
 INSTALLED_APPS = [

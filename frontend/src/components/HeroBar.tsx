@@ -16,11 +16,12 @@ export default function Herobar() {
                             <FormattedMessage
                                 id="app.herobar.welcome.to"
                             />
-                            <span>{import.meta.env.VITE_APP_NAME}</span></h2>
+                            <span className="md:block ml-2 md:m-0">{import.meta.env.VITE_APP_NAME}</span>
+                        </h2>
                         <p>
-                            <FormattedMessage
+                            {/* <FormattedMessage
                                 id="app.herobar.welcome.info"
-                            />
+                            /> */}
                         </p>
                         <div className="flex justify-center lg:justify-start">
                             <Link to="/" className="btn-get-started">

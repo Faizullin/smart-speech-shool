@@ -14,5 +14,4 @@ bot-auth-settings.json
 ./chats/bot-auth-settings.json
 *.sqlite3
 *.db
-
 .env
