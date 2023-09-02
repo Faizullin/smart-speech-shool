@@ -1,24 +1,32 @@
 import * as React from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { FormattedMessage } from 'react-intl';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { closeErrorModal } from '../../redux/store/reducers/errorModalSlice';
 
 export interface IErrorDetailModalProps {
-    show: boolean
-    setShow: (a: boolean) => void
-    payload: {
+    show?: boolean
+    setShow?: (a: boolean) => void
+    payload?: {
         status: number,
         message: string,
     }
 }
 
 export default function ErrorDetailModal(props: IErrorDetailModalProps) {
-    const { payload } = props
+    const dispatch = useAppDispatch();
+    const { open, error: payload } = useAppSelector(state => state.errorModal);
     const handleClose = () => {
-        props.setShow(false)
+        if(props.setShow !== undefined) {
+            props.setShow(false)
+        }
+        else {
+            dispatch(closeErrorModal())
+        }
     }
 
     return (
-        <Transition appear show={props.show} as={React.Fragment}>
+        <Transition appear show={open} as={React.Fragment}>
             <Dialog
                 as="div"
                 className="fixed inset-0 z-10 overflow-y-auto"
@@ -58,11 +66,11 @@ export default function ErrorDetailModal(props: IErrorDetailModalProps) {
                                 as="h3"
                                 className="text-lg font-medium leading-6 text-gray-900"
                             >
-                                <span><FormattedMessage id="app.detail.label" />: <FormattedMessage id="app.error.label" defaultMessage="Error"/> {payload.status}</span>
+                                <span><FormattedMessage id="app.detail.label" />: <FormattedMessage id="app.error.label" defaultMessage="Error" /> {payload?.status}</span>
                             </Dialog.Title>
                             <div className="mt-2 text-gray-500 border-t pt-2">
                                 {
-                                    payload.message
+                                    payload?.message
                                 }
                             </div>
 

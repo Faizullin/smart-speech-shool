@@ -122,7 +122,6 @@ export default function QuizProcess1(_: IQuizProcess1Props) {
         setCurrentQuestionPage(page)
     }
 
-
     React.useEffect(() => {
         if (!quiz_id) return;
         if (!quizConfig.lazy && questions.length === 0) {

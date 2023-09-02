@@ -1,12 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+interface IErrorDetailProps {
+    status: number
+    message: string
+}
 interface IInitialState {
     type?: 'axios'
     open: boolean
-    error?: {
-        status: number
-        message: string
-    }
+    error?: IErrorDetailProps
 }
 const initialState: IInitialState = {
     open: false,

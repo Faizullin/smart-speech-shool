@@ -4,11 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import FaceIdDetector from '../../components/face_id/FaceIdDetector';
 import QuizSessionService, { ISessionData } from '../../services/QuizSessionService';
 import Layout from '../../components/layouts/Layout';
+import { openErrorModal } from '../../redux/store/reducers/errorModalSlice';
+import { useAppDispatch } from '../../hooks/redux';
 
 export interface IFaceIdVerifyProps {
 }
 
 export default function FaceIdVerify(_: IFaceIdVerifyProps) {
+    const dispatch = useAppDispatch()
     const navigate = useNavigate();
     const routeFor = React.useRef<string>('')
 
@@ -24,10 +27,15 @@ export default function FaceIdVerify(_: IFaceIdVerifyProps) {
                 window.location.reload();
             }
         }).catch(error => {
-            console.error("error:", error);
-            if (error.response?.message) {
-                alert(error.response.message)
+            if (error.response.status === 403 && error.response.data) {
+                // alert(error.response.message)
+                dispatch(openErrorModal({
+                    status: 403,
+                    message: error.response.data.message,
+                }))
+                return;
             }
+            console.error("error:", error);
         });
     }
     const handleFullDetect = (file: any) => {
