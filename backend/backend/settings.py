@@ -283,8 +283,4 @@ else:
 
 if not DEBUG:
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-<<<<<<< HEAD
     SECURE_SSL_REDIRECT = True
-=======
-    SECURE_SSL_REDIRECT = True
->>>>>>> 37c90254e297c4635ffd652a698c14f8d90541b6
