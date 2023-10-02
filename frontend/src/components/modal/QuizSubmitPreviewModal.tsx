@@ -17,6 +17,14 @@ export interface IQuizSubmitPreviewModalProps {
     onConvertStart?: (data?: any) => any
 }
 
+const convertProcessing = async (videoChunks: any[], mimeType = 'video/mp4') => {
+    // const videoBlob = new Blob(videoChunks, { type: mimeType });
+    // const videoUrl = URL.createObjectURL(videoBlob);
+    // setVideoURL(videoUrl);
+    const combinedBlob = new Blob(videoChunks, { type: mimeType });
+    return combinedBlob
+}
+
 export default function QuizSubmitPreviewModal({ show, setShow, payload, questions, recordedChunks, onConvertStart }: IQuizSubmitPreviewModalProps) {
     const dispatch = useAppDispatch()
     const params = useParams()
@@ -34,13 +42,20 @@ export default function QuizSubmitPreviewModal({ show, setShow, payload, questio
             questions: []
         }
         const formData = new FormData()
+        let allSelected = true
         Object.keys(payload).forEach((element: string) => {
+            if(!payload[element] || payload[element].length === 0) {
+                allSelected = false
+            }
             data.questions.push({
                 'answers': payload[element],
                 'id': element,
             })
         })
-        console.log(videoData, recordedChunks,)
+        if(!allSelected) {
+            alert("Plesase select all values")
+            return
+        }
         formData.append('questions', JSON.stringify(data.questions))
         formData.append('record', videoData, 'record.mp4')
 
@@ -64,13 +79,6 @@ export default function QuizSubmitPreviewModal({ show, setShow, payload, questio
     }
     const handleClose = () => {
         setShow(false)
-    }
-    const convertProcessing = async (videoChunks: any[], mimeType = 'video/mp4') => {
-        // const videoBlob = new Blob(videoChunks, { type: mimeType });
-        // const videoUrl = URL.createObjectURL(videoBlob);
-        // setVideoURL(videoUrl);
-        const combinedBlob = new Blob(videoChunks, { type: mimeType });
-        return combinedBlob
     }
     const handleConvertVideo = () => {
         setVideoReady(false)
@@ -194,14 +202,14 @@ export default function QuizSubmitPreviewModal({ show, setShow, payload, questio
                                 <button
                                     type="button"
                                     onClick={handleConvertVideo}
-                                    disabled={videoReady}
+                                    disabled={!videoReady}
                                     className="bg-blue-500 mr-6 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                 >
                                     <FormattedMessage id="app.convert.label" defaultMessage="Convert" />
                                 </button>
                                 <button
                                     type="button"
-                                    disabled={!videoReady}
+                                    disabled={videoReady}
                                     onClick={handleSubmit}
                                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                 >

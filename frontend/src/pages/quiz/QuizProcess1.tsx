@@ -72,7 +72,7 @@ export default function QuizProcess1(_: IQuizProcess1Props) {
         setSelectedLanguage(langCode);
     };
     const handleMark = (question: IQuestion, answer: IMarked) => {
-        const question_id = question.id
+        const question_id = `${question.id}`
         let final_answer: IMarked;
 
         if (question.question_type === 'c') {

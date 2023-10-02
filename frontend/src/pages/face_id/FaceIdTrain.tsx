@@ -14,6 +14,7 @@ export interface IFaceIdTrainProps {
 export default function FaceIdTrain(_: IFaceIdTrainProps) {
   const [capturedImages, setCapturedImages] = React.useState<File[]>([]);
   const detectCounter = React.useRef<number>(0);
+  const [loading, setLoading] = React.useState<boolean>(false)
   const navigate = useNavigate()
 
 
@@ -25,8 +26,10 @@ export default function FaceIdTrain(_: IFaceIdTrainProps) {
       }
       formData.append(`images`, element)
     });
+    setLoading(true)
     StudentService.trainFace(formData).then(() => {
       navigate("/dashboard/profile")
+      setLoading(false)
       window.location.reload();
     });
   }
@@ -55,7 +58,7 @@ export default function FaceIdTrain(_: IFaceIdTrainProps) {
         <FaceIdDetector detectLimit={3} onDetect={handleDetect} onCountChange={handleCountChange} />
         <div className="mt-10 w-full flex flex-col">
           <span className='mx-auto text-lg mb-6'>{detectCounter.current} - {capturedImages.length}</span>
-          <PrimaryButton onClick={handleSubmit} processing={capturedImages.length < requiredImageSize}
+          <PrimaryButton onClick={handleSubmit} processing={(capturedImages.length < requiredImageSize) && !loading}
             type='button' className='bg-green mx-auto mb-6'>
             <FormattedMessage
               id='app.submit.label' />

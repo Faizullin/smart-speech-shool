@@ -42,6 +42,7 @@ const TriggerButton = ({ onClick }: { onClick: (data?: any) => void }) => {
 }
 
 export function ChatRoomsListSidebar({ onOpenChat, chat_rooms, current_chat_room, open, setOpen }: IChatRoomsListSidebarProps) {
+    const { loading } = useAppSelector(state => state.chat)
     return (
         <>
             <div className='lg:hideen'>
@@ -73,7 +74,7 @@ export function ChatRoomsListSidebar({ onOpenChat, chat_rooms, current_chat_room
                                     <div className="flex items-center justify-between px-4">
                                         <h2 className="text-lg font-medium text-gray-900">
                                             <div className="p-4">
-                                                <PrimaryButton onClick={onOpenChat}>
+                                                <PrimaryButton onClick={onOpenChat} processing={loading}>
                                                     <FormattedMessage id='app.chat.new_chat.label' />
                                                 </PrimaryButton>
                                             </div>
@@ -122,7 +123,7 @@ export function ChatRoomsListSidebar({ onOpenChat, chat_rooms, current_chat_room
             <div className="lg:w-1/3 hidden lg:block h-full">
                 <div className={`sidebar ease-out duration-300  translate-x-0 md:transform-none md:transition-none h-full`} >
                     <div className="p-4">
-                        <PrimaryButton onClick={onOpenChat}>
+                        <PrimaryButton onClick={onOpenChat} processing={loading}>
                             <FormattedMessage id='app.chat.new_chat.label' />
                         </PrimaryButton>
                     </div>

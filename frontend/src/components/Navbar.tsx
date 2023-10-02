@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import AuthDropdown from "./form/auth/AuthDropdown";
 import LangSelect from "./LangSelect";
 import { FormattedMessage } from "react-intl";
+import LangConfig from "../lang/LangConfig";
 
 export interface INavbarProps {
 }
@@ -18,6 +19,10 @@ export default function Navbar(_: INavbarProps) {
             document.body.classList.remove('mobile-nav-active');
         }
     }, [isOpenNavbar])
+    const show_lang_select = useMemo(() => {
+        const tmp_lang_config = new LangConfig()
+        return tmp_lang_config.getLangMode() != '1'
+    }, [])
 
     return (
         <div className="container mx-auto flex items-center justify-between px-4">
@@ -52,7 +57,10 @@ export default function Navbar(_: INavbarProps) {
                             />
                         </NavLink>
                     </li>
-                    <LangSelect />
+                    {
+                        show_lang_select && <LangSelect />
+                    }
+
                     <AuthDropdown />
                 </ul>
             </nav>

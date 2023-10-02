@@ -9,13 +9,21 @@ const messages = {
     'ru': Russian,
 };
 
+const lang_mode = document.getElementsByTagName('base')[0].dataset.lang_mode as string
+
 export interface ILangOption {
     code: Lang
     name: string
 }
 
 export default class LangConfig {
+    getLangMode() {
+        return lang_mode
+    }
     getLang(): Lang {
+        if(this.getLangMode() == '1'){
+            return 'kk'
+        }
         const dLang = localStorage.getItem('lang') || 'en'
         return dLang as Lang
     }
