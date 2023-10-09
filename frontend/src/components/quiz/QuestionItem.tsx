@@ -74,7 +74,6 @@ const QuestionItem: React.FC<Props> = ({ index, question, onMark, marked, lang, 
             <p>
                 {index} {")"} <span>{question.prompt}</span>
             </p>
-            {listening ? 'True' : "False"} {question.question_type}
             <div className='mt-3 ml-8'>
                 {
                     question.question_type === 'c' &&

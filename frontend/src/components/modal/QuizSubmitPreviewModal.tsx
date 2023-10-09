@@ -44,7 +44,7 @@ export default function QuizSubmitPreviewModal({ show, setShow, payload, questio
         const formData = new FormData()
         let allSelected = true
         Object.keys(payload).forEach((element: string) => {
-            if(!payload[element] || payload[element].length === 0) {
+            if (!payload[element] || payload[element].length === 0) {
                 allSelected = false
             }
             data.questions.push({
@@ -52,13 +52,12 @@ export default function QuizSubmitPreviewModal({ show, setShow, payload, questio
                 'id': element,
             })
         })
-        if(!allSelected) {
+        if (!allSelected) {
             alert("Plesase select all values")
             return
         }
         formData.append('questions', JSON.stringify(data.questions))
         formData.append('record', videoData, 'record.mp4')
-
         ExamService.fetchSubmitQuiz(quiz_id, formData).then(_ => {
             sessionStorage.clear()
             handleClose()
@@ -92,9 +91,6 @@ export default function QuizSubmitPreviewModal({ show, setShow, payload, questio
             setVideoData(res)
         })
     }
-    React.useEffect(() => {
-        console.log('questions', questions, payload)
-    }, [payload])
     return (
         <Transition show={show} as={React.Fragment}>
             <Dialog
@@ -202,14 +198,14 @@ export default function QuizSubmitPreviewModal({ show, setShow, payload, questio
                                 <button
                                     type="button"
                                     onClick={handleConvertVideo}
-                                    disabled={!videoReady}
+                                    disabled={videoReady}
                                     className="bg-blue-500 mr-6 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                 >
                                     <FormattedMessage id="app.convert.label" defaultMessage="Convert" />
                                 </button>
                                 <button
                                     type="button"
-                                    disabled={videoReady}
+                                    disabled={!videoReady}
                                     onClick={handleSubmit}
                                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                 >
