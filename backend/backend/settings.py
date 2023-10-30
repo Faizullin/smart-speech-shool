@@ -14,11 +14,6 @@ from datetime import timedelta
 from pathlib import Path
 import os
 
-USE_DOTENV = False
-if USE_DOTENV:
-    from dotenv import load_dotenv
-    load_dotenv()
-
 USE_SPA = os.getenv('USE_SPA', 'True') == 'True'
 USE_WS = os.getenv('USE_WS', 'False') == 'True'
 USE_REDIS = os.getenv('USE_REDIS', 'False') == 'True'
@@ -38,7 +33,8 @@ DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = ['*']
 
-print(USE_REDIS, os.getenv('REDIS_URL'),os.getenv('REDIS_PORT'),os.getenv('REDIS_HOST'), DEBUG, USE_SPA)
+print(USE_REDIS, os.getenv('REDIS_URL'), os.getenv(
+    'REDIS_PORT'), os.getenv('REDIS_HOST'), DEBUG, USE_SPA)
 # Application definition
 
 INSTALLED_APPS = [
@@ -275,7 +271,7 @@ if USE_REDIS:
             'db': 0, }
     }
 else:
-    
+
     Q_CLUSTER = {
         'name': 'default',
         'connection': 'redis://127.0.0.1:6379/0',

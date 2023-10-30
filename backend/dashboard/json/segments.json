@@ -111,15 +111,6 @@
         ]
     },
     {
-        "label": "Certificate",
-        "active": false,
-        "link": "dashboard:certificate_list",
-        "groups": [
-            "admin",
-            "teacher"
-        ]
-    },
-    {
         "label": "Academic Config",
         "active": false,
         "link": "dashboard:academicconfig_list",

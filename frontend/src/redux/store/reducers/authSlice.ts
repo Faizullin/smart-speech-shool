@@ -4,6 +4,13 @@ import AuthService from '../../../services/AuthService';
 import { AxiosError } from 'axios';
 import UserService from '../../../services/UserService';
 
+export const STORAGE_TYPES = {
+  user: 'USER',
+  access: 'ACCESS',
+  refresh: 'REFRESH',
+  student: "STUDENT",
+}
+
 interface IInitialState {
   token: string | null,
   user: IAuthUser,
@@ -12,7 +19,7 @@ interface IInitialState {
   success: boolean,
 }
 
-const initToken = localStorage.getItem('token') ?? ''
+const initToken = localStorage.getItem(STORAGE_TYPES.access) ?? ''
 const initialState: IInitialState = {
   token: initToken,
   user: {
@@ -48,8 +55,8 @@ export const registerUser = createAsyncThunk("auth/registerUser",
   async (values: IRegisterProps, { rejectWithValue }) => {
     try {
       const response = await AuthService.register(values)
-      localStorage.setItem("token", response.data.access);
-      localStorage.setItem("refreshToken", response.data.refresh);
+      localStorage.setItem(STORAGE_TYPES.access, response.data.access);
+      localStorage.setItem(STORAGE_TYPES.refresh, response.data.refresh);
       return {
         ...response.data,
       };
@@ -67,8 +74,8 @@ export const loginUser = createAsyncThunk(
   async (values: ILoginProps, { rejectWithValue }) => {
     try {
       const response = await AuthService.login(values);
-      localStorage.setItem("token", response.data.access);
-      localStorage.setItem("refreshToken", response.data.refresh);
+      localStorage.setItem(STORAGE_TYPES.access, response.data.access);
+      localStorage.setItem(STORAGE_TYPES.refresh, response.data.refresh);
       return {
         ...response.data,
       }
@@ -120,10 +127,11 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      localStorage.removeItem('token')
-      localStorage.removeItem("refreshToken");
-      localStorage.removeItem("student");
-      localStorage.removeItem("user");
+      
+      localStorage.removeItem(STORAGE_TYPES.access);
+      localStorage.removeItem(STORAGE_TYPES.refresh);
+      localStorage.removeItem(STORAGE_TYPES.user);
+      localStorage.removeItem(STORAGE_TYPES.student);
       state.user.isAuthenticated = false
       state.loading = false
       state.errors = initialState.errors
@@ -132,8 +140,8 @@ const authSlice = createSlice({
       state.user = payload
     },
     setTokens: (_, { payload }) => {
-      localStorage.setItem("token", payload.access);
-      localStorage.setItem("refreshToken", payload.refresh);
+      localStorage.setItem(STORAGE_TYPES.access, payload.access);
+      localStorage.setItem(STORAGE_TYPES.refresh, payload.refresh);
     }
   },
   extraReducers(builder) {

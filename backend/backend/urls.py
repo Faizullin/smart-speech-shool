@@ -30,11 +30,8 @@ urlpatterns = [
     path('', include('exams.urls')),
     path('', include('results.urls')),
     path('', include('students.urls')),
-    path('', include('certificates.urls')),
     path('s/', include('dashboard.urls')),
-    path('', include('stats_export.urls')),
     re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
-
 ]
 
 

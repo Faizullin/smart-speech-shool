@@ -4,7 +4,7 @@ import Login from "../pages/auth/Login";
 import ProtectedRoute from "./ProtectedRoute";
 import ArticleIndex from "../pages/article";
 import About from "../pages/About";
-import ForgotPassword from '../pages/auth/ForgotPassword';
+import ForgotPassword from "../pages/auth/ForgotPassword";
 import ForgotPasswordConfirm from "../pages/auth/ForgotPasswordConfirm";
 import ProfileIndex from "../pages/dashboard";
 import ProfileEdit from "../pages/dashboard/profile/ProfileEdit";
@@ -13,12 +13,10 @@ import ExamIndex from "../pages/dashboard/exam";
 import ResultIndex from "../pages/dashboard/result";
 import HasCompletedFaceIdRoute from "./HasCompletedFaceIdRoute";
 import ArticleDetail from "../pages/article/ArticleDetail";
-import CertificateIndex from "../pages/dashboard/certificate";
 import { FormattedMessage } from "react-intl";
 import ChatIndex from "../pages/chat";
 import React from "react";
 import QuizProcess1 from "../pages/quiz/QuizProcess1";
-
 
 const FaceIdLogin = React.lazy(() => import("../pages/face_id/FaceIdLogin"));
 const FaceIdTrain = React.lazy(() => import("../pages/face_id/FaceIdTrain"));
@@ -28,9 +26,11 @@ const router = createBrowserRouter([
   {
     path: "/",
     handle: {
-      crumb: () => <Link to="/">
-        <FormattedMessage id="app.url.home" />
-      </Link>,
+      crumb: () => (
+        <Link to="/">
+          <FormattedMessage id="app.url.home" />
+        </Link>
+      ),
     },
     children: [
       {
@@ -50,8 +50,13 @@ const router = createBrowserRouter([
               </ProtectedRoute>
             ),
             handle: {
-              crumb: () => <span> <FormattedMessage id="app.url.articles" /> </span>,
-            }
+              crumb: () => (
+                <span>
+                  {" "}
+                  <FormattedMessage id="app.url.articles" />{" "}
+                </span>
+              ),
+            },
           },
           {
             path: ":id",
@@ -61,10 +66,15 @@ const router = createBrowserRouter([
               </ProtectedRoute>
             ),
             handle: {
-              crumb: () => <span> <FormattedMessage id="app.url.articles" /> </span>,
-            }
+              crumb: () => (
+                <span>
+                  {" "}
+                  <FormattedMessage id="app.url.articles" />{" "}
+                </span>
+              ),
+            },
           },
-        ]
+        ],
       },
       {
         path: "/auth",
@@ -85,7 +95,7 @@ const router = createBrowserRouter([
             path: "password_reset/confirm",
             element: <ForgotPasswordConfirm />,
           },
-        ]
+        ],
       },
       {
         path: "/face_id",
@@ -99,15 +109,13 @@ const router = createBrowserRouter([
             path: "train",
             lazy: () => import("../pages/face_id/FaceIdTrain") as any,
             element: <FaceIdTrain />,
-
           },
           {
             path: "verify",
             lazy: () => import("../pages/face_id/FaceIdVerify") as any,
             element: <FaceIdVerify />,
-
           },
-        ]
+        ],
       },
       {
         path: "/dashboard",
@@ -131,7 +139,7 @@ const router = createBrowserRouter([
                   </ProtectedRoute>
                 ),
               },
-            ]
+            ],
           },
           {
             path: "results",
@@ -149,14 +157,6 @@ const router = createBrowserRouter([
               </StudentProtectedRoute>
             ),
           },
-          {
-            path: "certificates",
-            element: (
-              <StudentProtectedRoute>
-                <CertificateIndex />
-              </StudentProtectedRoute>
-            ),
-          }
         ],
       },
       {
@@ -177,10 +177,15 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
         handle: {
-          crumb: () => <span> <FormattedMessage id="app.url.chat.label" /> </span>,
+          crumb: () => (
+            <span>
+              {" "}
+              <FormattedMessage id="app.url.chat.label" />{" "}
+            </span>
+          ),
         },
       },
-    ]
+    ],
   },
-],);
+]);
 export default router;
