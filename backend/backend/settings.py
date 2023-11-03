@@ -69,7 +69,6 @@ INSTALLED_APPS = [
     'students',
     'certificates',
     'stats_export',
-    'spa_app',
 ]
 
 MIDDLEWARE = [
