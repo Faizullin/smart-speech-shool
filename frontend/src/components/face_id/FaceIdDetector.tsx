@@ -66,6 +66,7 @@ export default function FaceIdDetector({ detectLimit, onDetect, onFullDetect, on
 
     const check = (detections: any[]) => {
         if (detections.length === 1) {
+            getFaceDirection(detections)
             if (detectCounter.current + 1 > detectLimit) {
                 const video = videoRef.current;
                 const image = faceapi.createCanvasFromMedia(video);
@@ -97,6 +98,32 @@ export default function FaceIdDetector({ detectLimit, onDetect, onFullDetect, on
         }
 
     }
+
+    const getFaceDirection = (detections: any) => {
+        if (detections.length > 0) {
+            const faceLandmarks = detections[0].landmarks._positions;
+    
+            const nose = faceLandmarks[33]; // Assuming index 33 represents the nose in faceapi.js
+    
+            const rightEye = faceLandmarks[15]; // Adjust these indexes according to faceapi.js for right and left eye
+            const leftEye = faceLandmarks[1];
+    
+            const faceWidth = rightEye._x - leftEye._x;
+            const faceCenter = (rightEye._x + leftEye._x) / 2;
+    
+            const faceDirection = (nose._x - faceCenter) / faceWidth;
+    
+            if (faceDirection > 0.1) {
+                console.log("Face is looking right");
+            } else if (faceDirection < -0.1) {
+                console.log("Face is looking left");
+            } else {
+                console.log("Face is looking straight");
+            }
+        } else {
+            console.log("No face detected");
+        }
+    };
 
     const handleVideoOnPlay = () => {
         setInterval(async () => {

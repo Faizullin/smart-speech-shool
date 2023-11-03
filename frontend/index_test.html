@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Face Detection and Head Movement</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/face-api.js"></script>
+    <style>
+      #video {
+        transform: scaleX(-1); /* Flip the video horizontally */
+      }
+    </style>
+  </head>
+  <body>
+    <video id="video" width="640" height="480" autoplay></video>
+    <canvas id="output" width="640" height="480"></canvas>
+    <img
+      id="face"
+      src="path_to_your_face_image"
+      width="100"
+      height="100"
+      style="position: absolute; top: 50px; left: 50px"
+    />
+  </body>
+</html>
+<script>
+  // Load the models
+  window.onload = function () {
+    startMyCode();
+  };
+  function startMyCode() {
+    const MODEL_URL =
+      "https://cdn.jsdelivr.net/gh/cgarciagl/face-api.js@0.22.2/weights";
+    Promise.all([
+      faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
+      faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
+      faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
+      faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
+    ]).then(startVideo);
+
+    let previousFacePosition = ""; // Store the previous face position
+
+    // Start the video stream and face detection
+    function startVideo() {
+      navigator.mediaDevices
+        .getUserMedia({ video: {} })
+        .then((stream) => {
+          const video = document.getElementById("video");
+          video.srcObject = stream;
+          video.addEventListener("play", detectFace);
+        })
+        .catch((err) => console.error(err));
+    }
+
+    // Detect face and save images based on head position
+    function detectFace() {
+      const video = document.getElementById("video");
+
+      setInterval(async () => {
+        const detections = await faceapi
+          .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+          .withFaceLandmarks();
+        if (detections.length > 0) {
+          const faceBox = detections[0].landmarks._positions;
+          const leftEye = faceBox[1];
+          const rightEye = faceBox[2];
+
+          // Calculate head movement
+          const distance = rightEye._x - leftEye._x;
+          const maxDistance = video.width * 0.2; // Adjust the movement range
+          const normalizedDistance = distance / maxDistance;
+
+          let currentFacePosition = "";
+
+          if (normalizedDistance < -0.5) {
+            currentFacePosition = "left";
+          } else if (normalizedDistance > 0.5) {
+            currentFacePosition = "right";
+          } else {
+            currentFacePosition = "straight";
+          }
+
+          // Save images based on head position change
+          if (currentFacePosition !== previousFacePosition) {
+            saveImage(currentFacePosition); // Function to save the image
+            previousFacePosition = currentFacePosition;
+          }
+        }
+      }, 100);
+    }
+
+    // Function to save the image
+    function saveImage(position) {
+      // Here, implement image capture or use canvas to capture video frame and save it to the server or device
+      // This would involve capturing the current video frame and saving it as an image file
+      console.log(`Saving image for face position: ${position}`);
+      // Use HTML5 Canvas or other libraries to capture the video frame and save it
+      // Example: canvas.toDataURL() or sending the video stream to a server endpoint for saving
+      // Implement saving logic here
+    }
+  }
+</script>
