@@ -10,7 +10,6 @@ export default function Footer() {
                         <Link to="" className="logo flex items-center">
                             <span>{import.meta.env.VITE_APP_NAME}</span>
                         </Link>
-                        <p>Cras fermentum odio eu feugiat lide par naso tierra. Justo eget nada terra videa magna derita valies darta donna mare fermentum iaculis eu non diam phasellus.</p>
                         <div className="social-links flex mt-4">
                             {/* <Link href="#" className="twitter">
                             <FaTwitter />
@@ -76,13 +75,6 @@ export default function Footer() {
                                     id="app.footer.contact_us"
                                 />
                             </h4>
-                            <p>
-                                U38 D25 <br />
-                                Astana, 010000<br />
-                                Kazakhstan <br /><br />
-                                <strong>Phone:</strong> +7 777 777 77 77<br />
-                                <strong>Email:</strong> admin@example.com<br />
-                            </p>
                         </div>
 
                     </div>
@@ -93,6 +85,7 @@ export default function Footer() {
             <div className="container mx-auto sm:px-4 mt-4">
                 <div className="copyright">
                     &copy; Copyright <strong><span>{import.meta.env.VITE_APP_NAME}</span></strong>. All Rights Reserved
+                    «Болашақ информатика мұғалімдеріне арналған ақпараттық портал»
                 </div>
             </div>
         </footer>

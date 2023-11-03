@@ -32,7 +32,7 @@ export default function ChatForm({ chat_room }: IChatFormProps) {
     const dispatch = useAppDispatch()
     const [intervalId, setIntervalId] = React.useState<any>();
     const lastMessageId = React.useRef<string>('-1');
-    const connection_type = React.useRef<ConnectionType>('ws')
+    const connection_type = React.useRef<ConnectionType>('api')
     const { messages, chat_users_n } = useAppSelector(state => state.chat)
     const { user } = useAppSelector(state => state.auth)
     const [messageBody, setMessageBody] = React.useState<string>('')
