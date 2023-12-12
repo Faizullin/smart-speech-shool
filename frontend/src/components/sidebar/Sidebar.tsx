@@ -34,7 +34,6 @@ const Sidebar = (props: ISidebarProps) => {
         }
     }
     const handleFiltersClick = (filter_field: string, value: any) => {
-        console.log(filter_field, value)
         let params = {}
         if (filter_field === 'subjects') {
             params = {

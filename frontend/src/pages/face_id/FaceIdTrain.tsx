@@ -1,71 +1,87 @@
-import * as React from 'react';
-import StudentService from '../../services/StudentService';
-import { useNavigate } from 'react-router-dom';
-import { FormattedMessage } from 'react-intl';
-import FaceIdDetector from '../../components/face_id/FaceIdDetector';
-import Layout from '../../components/layouts/Layout';
-import PrimaryButton from '../../components/form/auth/PrimaryButton';
+import * as React from "react";
+import StudentService from "../../services/StudentService";
+import { useNavigate } from "react-router-dom";
+import { FormattedMessage } from "react-intl";
+import FaceIdDetector, {
+  IFaceDirection,
+} from "../../components/face_id/FaceIdDetector";
+import Layout from "../../components/layouts/Layout";
+import PrimaryButton from "../../components/form/auth/PrimaryButton";
 
 const requiredImageSize = 3;
 
-export interface IFaceIdTrainProps {
-}
-
-export default function FaceIdTrain(_: IFaceIdTrainProps) {
-  const [capturedImages, setCapturedImages] = React.useState<File[]>([]);
+export default function FaceIdTrain() {
+  const [capturedImages, setCapturedImages] = React.useState<
+    Record<IFaceDirection, File | null>
+  >({
+    straight: null,
+    left: null,
+    right: null,
+  });
   const detectCounter = React.useRef<number>(0);
-  const [loading, setLoading] = React.useState<boolean>(false)
-  const navigate = useNavigate()
-
+  const [loading, setLoading] = React.useState<boolean>(false);
+  const [ready, setReady] = React.useState<boolean>(false);
+  const navigate = useNavigate();
 
   const handleSubmit = () => {
-    const formData = new FormData()
-    capturedImages.forEach((element, index) => {
+    const formData = new FormData();
+    Object.keys(capturedImages).forEach((key, index) => {
       if (index >= requiredImageSize) {
-        return
+        return;
       }
-      formData.append(`images`, element)
+      formData.append(`images`, capturedImages[key as IFaceDirection] as File);
     });
-    setLoading(true)
+    setLoading(true);
     StudentService.trainFace(formData).then(() => {
-      navigate("/dashboard/profile")
-      setLoading(false)
+      navigate("/dashboard/profile");
+      setLoading(false);
       window.location.reload();
     });
-  }
-  const handleDetect = (file: File) => {
-    if (capturedImages.length > requiredImageSize) {
-      window.location.reload()
-      return
-    }
-    setCapturedImages(capturedImages => ([
-      ...capturedImages,
-      file
-    ]))
-  }
+  };
   const handleCountChange = (count: number) => {
-    detectCounter.current = count
+    detectCounter.current = count;
     if (detectCounter.current > requiredImageSize) {
-      detectCounter.current = requiredImageSize
+      detectCounter.current = requiredImageSize;
     } else if (detectCounter.current === 0) {
-      setCapturedImages([])
+      setCapturedImages({
+        straight: null,
+        left: null,
+        right: null,
+      });
     }
-  }
+  };
 
   return (
     <Layout>
       <div className="container mx-auto">
-        <FaceIdDetector detectLimit={3} onDetect={handleDetect} onCountChange={handleCountChange} />
+        <FaceIdDetector
+          onCountChange={handleCountChange}
+          right_left_check={{
+            use: true,
+            onDetectSuccess(data: File, direction: IFaceDirection) {
+              setCapturedImages((capturedImages) => ({
+                ...capturedImages,
+                [direction]: data,
+              }));
+              if (direction === "right") {
+                setReady(true);
+              }
+            },
+            onFullDetectSuccess() {},
+          }}
+        />
         <div className="mt-10 w-full flex flex-col">
-          <span className='mx-auto text-lg mb-6'>{detectCounter.current} - {capturedImages.length}</span>
-          <PrimaryButton onClick={handleSubmit} processing={(capturedImages.length < requiredImageSize) && !loading}
-            type='button' className='bg-green mx-auto mb-6'>
-            <FormattedMessage
-              id='app.submit.label' />
+          <span className="mx-auto text-lg mb-6">{detectCounter.current}</span>
+          <PrimaryButton
+            onClick={handleSubmit}
+            processing={!ready && !loading}
+            type="button"
+            className="bg-green mx-auto mb-6"
+          >
+            <FormattedMessage id="app.submit.label" />
           </PrimaryButton>
         </div>
       </div>
     </Layout>
   );
 }
-

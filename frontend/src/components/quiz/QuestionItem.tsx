@@ -28,7 +28,6 @@ const QuestionItem: React.FC<Props> = ({ index, question, onMark, marked, lang, 
         console.log('Your browser does not support speech recognition software! Try Chrome desktop, maybe?');
     }
     const startListeng = () => {
-        console.log("Start")
         const lang_to_use = lang ? lang : 'en'
         SpeechRecognition.startListening({
             continuous: true,
@@ -36,7 +35,6 @@ const QuestionItem: React.FC<Props> = ({ index, question, onMark, marked, lang, 
         });
     }
     const stopListeng = () => {
-        console.log("Stop")
         SpeechRecognition.stopListening()
     }
     React.useEffect(() => {

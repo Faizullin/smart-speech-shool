@@ -147,7 +147,7 @@ const DashboardLayout = ({ children }: Props) => {
                                                 </Link>
                                             </span>
                                         </div>
-                                        <div className="flex items-center space-x-3 font-semibold text-gray-900 text-xl leading-8">
+                                        {/* <div className="flex items-center space-x-3 font-semibold text-gray-900 text-xl leading-8">
                                             <span className="text-green-500">
                                                 <svg className="h-5 fill-current" xmlns="http://www.w3.org/2000/svg" fill="none"
                                                     viewBox="0 0 24 24" stroke="currentColor">
@@ -161,7 +161,7 @@ const DashboardLayout = ({ children }: Props) => {
 
                                                 </Link>
                                             </span>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </div>
                                 <div className="w-full md:w-9/12 md:mx-2 mt-6 md:mt-0">

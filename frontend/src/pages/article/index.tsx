@@ -36,7 +36,6 @@ export default function ArticleIndex(_: IArticleIndexProps) {
 
   React.useEffect(() => {
     dispatch(fetchArticleList({}));
-    console.log("Request")
   }, [dispatch, pagination.page, pagination.pageSize, filters.sort]);
 
   const handlePageChange = (page: number) => {

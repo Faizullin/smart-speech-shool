@@ -17,7 +17,6 @@ import { FormattedMessage } from "react-intl";
 import ChatIndex from "../pages/chat";
 import React from "react";
 import QuizProcess1 from "../pages/quiz/QuizProcess1";
-import FaceIdTest from "../pages/face_id/FaceIdTest";
 
 const FaceIdLogin = React.lazy(() => import("../pages/face_id/FaceIdLogin"));
 const FaceIdTrain = React.lazy(() => import("../pages/face_id/FaceIdTrain"));
@@ -188,9 +187,5 @@ const router = createBrowserRouter([
       },
     ],
   },
-  {
-    path:"test",
-    element: <FaceIdTest/>
-  }
 ]);
 export default router;
