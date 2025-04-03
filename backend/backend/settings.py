@@ -234,24 +234,15 @@ EMAIL_SEND_FROM_NAME = "notifier-bot@smedufacelearn.kz"
 ASGI_APPLICATION = 'backend.asgi.application'
 
 
-if USE_REDIS and USE_WS:
-    CHANNEL_LAYERS = {
-        'default': {
-            'BACKEND': 'channels_redis.core.RedisChannelLayer',
-            'CONFIG': {
-                "hosts": [os.getenv('REDIS_URL')],
-            },
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+             "hosts": [os.getenv('REDIS_URL')],
         },
-    }
-elif USE_WS:
-    CHANNEL_LAYERS = {
-        'default': {
-            'BACKEND': 'channels_redis.core.RedisChannelLayer',
-            'CONFIG': {
-                "hosts": ['redis://localhost:6379'],
-            },
-        },
-    }
+    },
+}
 
 if USE_REDIS:
     Q_CLUSTER = {

@@ -1,58 +1,67 @@
-version: "3"
+version: '3'
 services:
-    web:
-        build:
-            context: ./backend
-            dockerfile: Dockerfile.prod
-        restart: always
-        command: gunicorn backend.wsgi:application --bind 0.0.0.0:8000
-        volumes:
-            - static_data:/app/static
-            - media_data:/app/media
-        env_file:
-            - ./.env
-        expose:
-            - 8000
-        depends_on:
+  web:
+      build:
+          context: ./backend
+          dockerfile: Dockerfile.prod
+      restart: always
+      command: python3 manage.py runserver 0.0.0.0:8000 # daphne backend.asgi:application -b 0.0.0.0 -p 8000 #python3 manage.py runserver 0.0.0.0:8000
+      volumes:
+          - static_data:/app/static
+          - media_data:/app/media
+          - model_data:/app/accounts_face_recognition/model_data
+      env_file:
+          - ./.env
+      environment:
+        - DJANGO_SETTINGS_MODULE=backend.settings
+      expose:
+          - 8000
+      depends_on:
           - redis
           - db
-    nginx:
-        build: ./nginx
-        restart: always
-        ports:
-            - 8080:80
-        volumes:
-            - static_data:/app/static
-            - media_data:/app/media
-        depends_on:
-            - web
-    django-q:
-        build:
-            context: ./backend
-            dockerfile: Dockerfile.prod
-        command: python3 manage.py qcluster
-        env_file:
-            - ./.env
-        depends_on:
-            - redis
-            - web
-    redis:
-        restart: unless-stopped
-        image: redis:alpine 
-        expose:
-            - 6379
-
-    db:
-        image: postgres:13-alpine
-        restart: always
-        volumes:
-            - postgres_data:/var/lib/postgresql/data/
-        environment:
-            POSTGRES_USER: user
-            POSTGRES_PASSWORD: password
-            POSTGRES_DB: database
+  nginx:
+      
+      build:
+          context: ./nginx
+          dockerfile: Dockerfile
+      ports:
+        - "80:80"
+        - "443:443"
+      volumes:
+        - ./nginx/conf.d:/etc/nginx/conf.d
+        - /etc/letsencrypt:/etc/letsencrypt
+        - ./frontend/dist:/app/frontend/dist
+        - static_data:/app/static
+        - media_data:/app/media
+      depends_on:
+        - web
+  django-q:
+      build:
+          context: ./backend
+          dockerfile: Dockerfile.prod
+      command: python3 manage.py qcluster
+      env_file:
+          - ./.env
+      depends_on:
+          - redis
+          - web
+  redis:
+      restart: unless-stopped
+      image: redis:alpine 
+      expose:
+          - 6379
+  db:
+      image: postgres:13-alpine
+      restart: always
+      volumes:
+          - postgres_data:/var/lib/postgresql/data/
+      environment:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: database
 
 volumes:
+    model_data:
     postgres_data:
     static_data:
     media_data:

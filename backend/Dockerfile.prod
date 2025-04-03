@@ -1,36 +1,39 @@
-FROM jhonatans01/python-dlib-opencv
+FROM orgoro/dlib-opencv-python
 
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
-RUN apt-get -y update && apt-get install -y netcat
-RUN pip install --upgrade pip
+ENV HOME=/app
+RUN mkdir $HOME
+WORKDIR $HOME
 
-
-
-WORKDIR /app
-
-EXPOSE 8000
-
-COPY requirements.txt /app/
-RUN mkdir /app/static
-RUN mkdir /app/media
-RUN mkdir /app/accounts_face_recognition
-RUN mkdir /app/accounts_face_recognition/model_data
+RUN mkdir $HOME/public
+RUN mkdir $HOME/public/static
+RUN mkdir $HOME/public/media
+RUN mkdir $HOME/logs
+RUN mkdir $HOME/logs/api
+RUN mkdir $HOME/logs/celery
+RUN mkdir $HOME/accounts_face_recognition
+RUN mkdir $HOME/accounts_face_recognition/model_data
 
 
+# install system dependencies
+RUN apt-get update && \
+    apt install -y gcc netcat \
+                python3-pip \
+                python3-opencv
+
+RUN pip install --trusted-host pypi.python.org --upgrade pip
 
 RUN pip3 install -U pip wheel cmake
 RUN pip3 install dlib face_recognition gunicorn
-RUN pip3 install -r requirements.txt
+COPY requirements.txt $HOME/requirements.txt
+RUN pip install -r $HOME/requirements.txt
 
-RUN apt update
-RUN apt install -y nginx
-
-COPY ./entrypoint.sh .
-RUN sed -i 's/\r$//g' /app/entrypoint.sh
-RUN chmod +x /app/entrypoint.sh
+COPY ./entrypoint.sh $HOME/entrypoint.sh
+RUN sed -i 's/\r$//g' $HOME/entrypoint.sh
+RUN chmod +x $HOME/entrypoint.sh
 
 COPY . .
 
-ENTRYPOINT ["sh","/app/entrypoint.sh"]
+ENTRYPOINT ["sh", "./entrypoint.sh"]
