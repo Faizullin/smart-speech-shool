@@ -1,5 +1,6 @@
 import { FormattedMessage } from "react-intl";
 import { Document, Page, pdfjs } from "react-pdf";
+import PrimaryButton from "../form/auth/PrimaryButton";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 function FileViewer({ src }: { src: string }) {
@@ -10,9 +11,9 @@ function FileViewer({ src }: { src: string }) {
     return (
       <>
         <div className="my-4">
-          <a href={src} className="font-bold">
+          <PrimaryButton onClick={() => window.open(src)} className="font-bold w-auto">
             <FormattedMessage id="app.watch.label" defaultMessage="Watch" />
-          </a>
+          </PrimaryButton>
         </div>
         <video width="100%" controls>
           <source src={src} type="video/mp4" />
@@ -24,21 +25,21 @@ function FileViewer({ src }: { src: string }) {
     return (
       <>
         <div className="my-4">
-          <a href={src} className="font-bold">
+          <PrimaryButton onClick={() => window.open(src)} className="font-bold w-auto">
             <FormattedMessage id="app.read.label" defaultMessage="Read" />
-          </a>
+          </PrimaryButton>
         </div>
-        <Document file={src}>
+        {/* <Document file={src}>
           <Page pageNumber={1} />
-        </Document>
+        </Document> */}
       </>
     );
   } else {
     return (
       <div className="my-4">
-        <a href={src} className="font-bold">
+        <PrimaryButton onClick={() => window.open(src)}className="font-bold w-auto">
           <FormattedMessage id="app.watch.label" defaultMessage="Watch" />
-        </a>
+        </PrimaryButton>
         <div>Unsupported file format</div>
       </div>
     );

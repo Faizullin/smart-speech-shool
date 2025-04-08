@@ -78,20 +78,20 @@ export default function ArticleIndex(_: IArticleIndexProps) {
         }),
         sortable: true,
       },
-      {
-        key: "created_at",
-        title: intl.formatMessage({
-          id: "app.table.columns.created_at.label",
-        }),
-        sortable: true,
-      },
-      {
-        key: "updated_at",
-        title: intl.formatMessage({
-          id: "app.table.columns.updated_at.label",
-        }),
-        sortable: true,
-      },
+      // {
+      //   key: "created_at",
+      //   title: intl.formatMessage({
+      //     id: "app.table.columns.created_at.label",
+      //   }),
+      //   sortable: true,
+      // },
+      // {
+      //   key: "updated_at",
+      //   title: intl.formatMessage({
+      //     id: "app.table.columns.updated_at.label",
+      //   }),
+      //   sortable: true,
+      // },
       {
         key: "actions",
         title: intl.formatMessage({

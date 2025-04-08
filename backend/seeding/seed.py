@@ -27,7 +27,7 @@ def seed():
     superuser1 = SuperuserFactory(
         username="admin",
         email="admin@example.com",
-        password="password",
+        password="admin.password@1234",
     )
     teacher1 = UserFactory(
         approval_status=random.choice(["a"]),

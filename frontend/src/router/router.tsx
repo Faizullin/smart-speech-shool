@@ -3,6 +3,7 @@ import Register from "../pages/auth/Register";
 import Login from "../pages/auth/Login";
 import ProtectedRoute from "./ProtectedRoute";
 import ArticleIndex from "../pages/article";
+import Home from "../pages/Home";
 import About from "../pages/About";
 import ForgotPassword from "../pages/auth/ForgotPassword";
 import ForgotPasswordConfirm from "../pages/auth/ForgotPasswordConfirm";
@@ -35,8 +36,20 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <About />,
+        element: <Home />,
         handle: {},
+      },
+      {
+        path: "/about",
+        element: <About />,
+        handle: {
+          crumb: () => (
+            <span>
+              {" "}
+              <FormattedMessage id="app.url.about" />{" "}
+            </span>
+          ),
+        }
       },
       {
         path: "/article",

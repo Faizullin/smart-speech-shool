@@ -18,7 +18,7 @@ export default function FaceIdTrain() {
     left: null,
     right: null,
   });
-  const detectCounter = React.useRef<number>(0);
+  const [detectCounter, setDetectCounter] = React.useState<number>(0);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [ready, setReady] = React.useState<boolean>(false);
   const navigate = useNavigate();
@@ -39,16 +39,18 @@ export default function FaceIdTrain() {
     });
   };
   const handleCountChange = (count: number) => {
-    detectCounter.current = count;
-    if (detectCounter.current > requiredImageSize) {
-      detectCounter.current = requiredImageSize;
-    } else if (detectCounter.current === 0) {
+    let newCount = count;
+    if (count > requiredImageSize) {
+      newCount= requiredImageSize;
+    } else if (newCount === 0) {
       setCapturedImages({
         straight: null,
         left: null,
         right: null,
       });
     }
+    console.log("Count changed", newCount);
+    setDetectCounter(newCount)
   };
 
   return (
@@ -71,7 +73,6 @@ export default function FaceIdTrain() {
           }}
         />
         <div className="mt-10 w-full flex flex-col">
-          <span className="mx-auto text-lg mb-6">{detectCounter.current}</span>
           <PrimaryButton
             onClick={handleSubmit}
             processing={!ready && !loading}

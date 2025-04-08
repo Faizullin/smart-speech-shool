@@ -1,9 +1,7 @@
-import Layout from '../components/layouts/Layout';
-import Herobar from '../components/HeroBar';
-import { mdiCheckCircle } from '@mdi/js';
 import Breadcrumbs from '../components/Breadcrumbs';
+import Herobar from '../components/HeroBar';
+import Layout from '../components/layouts/Layout';
 
-import { FormattedMessage } from 'react-intl';
 
 export interface IAboutProps {
 }
@@ -17,67 +15,87 @@ export default function About(_: IAboutProps) {
                 <div className="container mx-auto sm:px-4" data-aos="fade-up">
                     <div className="section-header">
                         <h2>
-                            <FormattedMessage
-                                id="app.about.header.name"
-                                defaultMessage="About us"
-                            />
+
                         </h2>
-                        <p>
-                            <FormattedMessage
-                                id="app.about.header.question"
-                            />
+                        <p>Болашақ информатика мұғалімдеріне арналған ақпараттық порталына қош келдіңіздер! Мұнда сіз машиналық оқыту, компьютерлік көру бойынша заманауи білім ала аласыз.
                         </p>
                     </div>
 
                     <div className="flex flex-wrap  gy-4">
-                        <div className="lg:w-1/2 pr-4 pl-4">
-                            <h3>Voluptatem dignissimos provident quasi corporis</h3>
-                            <img src={''}
-                                className="max-w-full h-auto rounded-lg object-cover mb-4" alt="" />
-                            <p>Ut fugiat ut sunt quia veniam. Voluptate perferendis perspiciatis quod nisi et. Placeat debitis quia recusandae odit et consequatur voluptatem. Dignissimos pariatur consectetur fugiat voluptas ea.</p>
-                            <p>Temporibus nihil enim deserunt sed ea. Provident sit expedita aut cupiditate nihil vitae quo officia vel. Blanditiis eligendi possimus et in cum. Quidem eos ut sint rem veniam qui. Ut ut repellendus nobis tempore doloribus debitis explicabo similique sit. Accusantium sed ut omnis beatae neque deleniti repellendus.</p>
-                        </div>
-                        <div className="lg:w-1/2 pr-4 pl-4">
-                            <div className="content ps-0 lg:ps-12">
-                                <p className="fst-italic mb-4">
-                                    <FormattedMessage
-                                        id="app.about.content.p1"
-                                    />
+                        <div className="bg-white p-6 rounded-lg shadow-md text-gray-800 space-y-4">
+                            <h2 className="text-lg font-semibold text-blue-600">🔹 Портал туралы</h2>
+                            <p>
+                                Бұл ақпараттық портал ҚР Ғылым және жоғары білім министрлігінің
+                                AP19677348 нөмірлі гранттық жобасы аясында әзірленді (2023–2025 жж.).
+                            </p>
+
+                            <div>
+                                <h3 className="font-semibold text-gray-700">📌 Жоба атауы:</h3>
+                                <p>
+                                    «Білімнің жаһандануы жағдайында жасанды интеллекттің бағыты – машиналық
+                                    оқыту негізінде информатика мұғалімдерінің даярлықтарын жетілдіруге
+                                    арналған ақпараттық білім порталын құру»
                                 </p>
-                                <ul className="mb-4">
+                            </div>
+
+                            <div>
+                                <h3 className="font-semibold text-gray-700">🎯 Мақсаты:</h3>
+                                <p>
+                                    Болашақ информатика пәні мұғалімдері мен IT бағыты бойынша білім
+                                    алушыларды келесі бағыттарда даярлау:
+                                </p>
+                                <ul className="list-disc list-inside ml-4">
+                                    <li>Машиналық оқыту алгоритмдерінің теориясы мен практикасы</li>
+                                    <li>Компьютерлік көру әдістерін қолдану</li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h3 className="text-blue-600 font-semibold">🔹 Авторлық құқықтар:</h3>
+                                <p>
+                                    Портал және оның ішкі контенті (оқу құралы, материалдар, интерфейс,
+                                    кодтар) жеке-жеке авторлық құқықпен қорғалған және ҚР мемлекеттік
+                                    тізіліміне тіркелген.
+                                </p>
+                            </div>
+
+                            <div>
+                                <h4 className="font-semibold">📁 1. Порталдың өзі (программалық өнім):</h4>
+                                <ul className="list-disc list-inside ml-4">
+                                    <li>Объект түрі: ЭЕМ-ге арналған бағдарлама</li>
+                                    <li>Атауы: «Болашақ информатика пәні мұғалімдеріне арналған ақпараттық портал»</li>
+                                    <li>Куәлік №: 39362  Берілген күні: 02.10.2023</li>
                                     <li>
-                                        <i>
-                                            <img src={mdiCheckCircle} alt="" />
-                                        </i>
-                                        <FormattedMessage
-                                            id="app.about.content.i1"
-                                        />
-                                    </li>
-                                    <li>
-                                        <i>
-                                            <img src={mdiCheckCircle} alt="" />
-                                        </i>
-                                        <FormattedMessage
-                                            id="app.about.content.i2"
-                                        />
-                                    </li>
-                                    <li>
-                                        <i>
-                                            <img src={mdiCheckCircle} alt="" />
-                                        </i>
-                                        <FormattedMessage
-                                            id="app.about.content.i3"
-                                        />
+                                        Авторлар:
+                                        <ul className="list-disc list-inside ml-4">
+                                            <li>Серік М.</li>
+                                            <li>Садвакасова А.Қ.</li>
+                                            <li>Тлеумагамбетова Д.Ш.</li>
+                                            <li>Дүйсегалиева Н.А.</li>
+                                        </ul>
                                     </li>
                                 </ul>
-                                <p className="mb-4">
-                                    <FormattedMessage
-                                        id="app.about.content.p2"
-                                    />
-                                </p>
-                                <img src={''}
-                                    className="max-w-full h-auto rounded-lg object-cover mb-4" alt="" />
                             </div>
+
+                            <div>
+                                <h4 className="font-semibold">📘 2. Портал ішіндегі оқу контенті:</h4>
+                                <ul className="list-disc list-inside ml-4">
+                                    <li>Атауы: «Машиналық оқыту негіздері және компьютерлік көру»</li>
+                                    <li>Мазмұны: Машиналық оқыту алгоритмдері, компьютерлік көру үшін ML әдістері</li>
+                                    <li>Куәлік №: 90024  Берілген күні: 04.04.2025</li>
+                                    <li>
+                                        Авторлар:
+                                        <ul className="list-disc list-inside ml-4">
+                                            <li>Дүйсегалиева Н. А.</li>
+                                            <li>Асанова Б. У.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <p className="text-green-600 font-medium">
+                                ✅ Екі объект те электрондық қолтаңбамен бекітілген
+                            </p>
                         </div>
                     </div>
                 </div>

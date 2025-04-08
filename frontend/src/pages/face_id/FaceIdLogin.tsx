@@ -16,8 +16,9 @@ export default function FaceIdLogin(_: IFaceIdLoginProps) {
       .then((response) => {
         dispatch(setTokens(response.data));
         dispatch(fetchUserData()).then(() => {
-          navigate("/dashboard/profile");
-          window.location.reload();
+          setTimeout(() => {
+            window.location.href = "/dashboard/profile";
+          }, 1000);
         });
       })
       .catch((error) => {

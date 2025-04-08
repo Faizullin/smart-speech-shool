@@ -50,9 +50,12 @@ const geIFaceDirection = (detection: any): IFaceDirection => {
   const left_diff = get_mean_x(nose) - get_mean_x(leftEye);
   const right_diff = get_mean_x(rightEye) - get_mean_x(nose);
 
-  if (left_diff > right_diff && Math.abs(right_diff - left_diff) > 20) {
+  console.log("left_diff", left_diff);
+  console.log("right_diff", right_diff);
+
+  if (left_diff > right_diff && Math.abs(right_diff - left_diff) > 14) {
     return "left";
-  } else if (left_diff < right_diff && Math.abs(right_diff - left_diff) > 20) {
+  } else if (left_diff < right_diff && Math.abs(right_diff - left_diff) > 14) {
     return "right";
   } else {
     return "straight";
@@ -132,6 +135,7 @@ export default function FaceIdDetector({
         if (right_left_check.onDetectSuccess) {
           right_left_check.onDetectSuccess(file, direction);
         }
+        
         if (currentFaceState === "right") {
           closeWebcam();
         }

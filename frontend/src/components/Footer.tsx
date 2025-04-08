@@ -84,8 +84,8 @@ export default function Footer() {
 
             <div className="container mx-auto sm:px-4 mt-4">
                 <div className="copyright">
-                    &copy; Copyright <strong><span>{import.meta.env.VITE_APP_NAME}</span></strong>. All Rights Reserved
-                    «Болашақ информатика мұғалімдеріне арналған ақпараттық портал»
+                    © Copyright <a href="/public/Свидетельство.pdf">mlteach.kz</a>. Барлық құқықтар қорғалған.
+                    «Болашақ информатика пәні мұғалімдеріне арналған ақпараттық портал»
                 </div>
             </div>
         </footer>
