@@ -21,7 +21,7 @@ class SubjectGroupTable(tables.Table):
     )
     class Meta:
         model = SubjectGroup
-        fields = ['id','title','semester','subject','teacher','created_at','updated_at']
+        fields = ['id','title','semester','subject','teacher',]
         attrs = {
             'class': 'table table-hover',
         }

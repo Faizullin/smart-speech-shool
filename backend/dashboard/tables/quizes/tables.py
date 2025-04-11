@@ -21,7 +21,7 @@ class QuizTable(tables.Table):
     )
     class Meta:
         model = Quiz
-        fields = ['id','exam', 'title' ,'time',  'start_date_time' , 'end_date_time','created_at','updated_at']
+        fields = ['id','exam', 'title' ,'time',  'start_date_time' , 'end_date_time',]
         attrs = {
             'class': 'table table-hover',
         }

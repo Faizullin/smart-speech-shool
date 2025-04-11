@@ -31,7 +31,7 @@ class FeedbackTable(tables.Table):
     class Meta:
         model = Feedback
         fields = ['id', 'result__student', 'result__exam',
-                  'watched',  'created_at', 'updated_at']
+                  'watched',  ]
         attrs = {
             'class': 'table table-hover',
         }
@@ -44,4 +44,4 @@ class FeedbackFilter(django_filters.FilterSet):
     class Meta:
         model = Feedback
         fields = ['id', 'result__student', 'result__exam',
-                  'content', 'result__student__current_group', 'watched', 'created_at', 'updated_at']
+                  'content', 'result__student__current_group', 'watched', ]

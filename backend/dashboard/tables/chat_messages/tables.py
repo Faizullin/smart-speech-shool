@@ -25,7 +25,7 @@ class ChatMessageTable(tables.Table):
     class Meta:
         model = ChatMessage
         fields = ['id', 'lang', 'chat_room', 'owner',
-                  'recipient', 'type', 'created_at', 'updated_at']
+                  'recipient', 'type', ]
         attrs = {
             'class': 'table table-hover',
         }

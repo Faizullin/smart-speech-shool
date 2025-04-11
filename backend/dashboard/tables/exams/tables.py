@@ -39,7 +39,7 @@ class ExamTable(tables.Table):
     class Meta:
         model = Exam
         fields = ['id', 'exam_type', 'exam_date',
-                  'subject', 'created_at', 'updated_at']
+                  'subject', ]
         attrs = {
             'class': 'table table-hover',
         }

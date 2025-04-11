@@ -39,7 +39,7 @@ class ResultTable(tables.Table):
     class Meta:
         model = Result
         fields = ['id', 'exam', 'student__first_name', 'student__last_name',
-                  'semester', 'total_marks', 'checked', "created_at", "updated_at"]
+                  'semester', 'total_marks', 'checked', ]
         attrs = {
             'class': 'table table-hover',
         }

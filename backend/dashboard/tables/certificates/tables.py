@@ -21,7 +21,7 @@ class CertificateTable(tables.Table):
     )
     class Meta:
         model = Certificate
-        fields = ["id","student","subject","image","created_at","updated_at"]
+        fields = ["id","student","subject","image"]
         attrs = {
             'class': 'table table-hover',
         }

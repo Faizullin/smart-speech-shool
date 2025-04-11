@@ -21,7 +21,7 @@ class AcademicConfigTable(tables.Table):
     )
     class Meta:
         model = AcademicConfig
-        fields = ['id','assign_groups_theory_min','created_at','updated_at']
+        fields = ['id','assign_groups_theory_min',]
         attrs = {
             'class': 'table table-hover',
         }

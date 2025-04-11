@@ -25,7 +25,7 @@ class QuestionTicketTable(tables.Table):
     class Meta:
         model = QuestionTicket
         fields = ['id', 'requested_chat_room', 'requested_chat_message',
-                  'to_chat_room', 'owner', 'status', 'created_at', 'updated_at']
+                  'to_chat_room', 'owner', 'status', ]
         attrs = {
             'class': 'table table-hover',
         }

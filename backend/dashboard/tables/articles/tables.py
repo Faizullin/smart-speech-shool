@@ -21,7 +21,7 @@ class ArticleTable(tables.Table):
     )
     class Meta:
         model = Article
-        fields = ["id","title", "subject", "status","created_at","updated_at"]
+        fields = ["id","title", "subject", "status",]
         attrs = {
             'class': 'table table-hover',
         }

@@ -20,7 +20,7 @@ class PracticalTable(tables.Table):
     )
     class Meta:
         model = Practical
-        fields = ['id','exam','student','practical_file','created_at','updated_at']
+        fields = ['id','exam','student','practical_file',]
         attrs = {
             'class': 'table table-hover',
         }

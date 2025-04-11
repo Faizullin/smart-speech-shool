@@ -25,7 +25,7 @@ class StudentAnswerTable(tables.Table):
     class Meta:
         model = StudentAnswer
         fields = ['id', 'student', 'question',
-                  'question__type', 'score', 'created_at']
+                  'question__type', 'score', ]
         attrs = {
             'class': 'table table-hover',
         }

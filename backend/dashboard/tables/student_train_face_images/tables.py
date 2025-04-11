@@ -23,7 +23,7 @@ class StudentTrainFaceImageTable(tables.Table):
     class Meta:
         model = StudentTrainFaceImage
         fields = ['id', 'student', 'train_face_image',
-                  'created_at', 'updated_at']
+                  ]
         attrs = {
             'class': 'table table-hover',
         }

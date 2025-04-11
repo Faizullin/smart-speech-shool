@@ -8,7 +8,7 @@ from academics.models import SubjectGroup
 class StudentTable(tables.Table):
     class Meta:
         model = Student
-        fields = ['id', 'first_name', 'last_name', 'current_group', 'user','updated_at']
+        fields = ['id', 'first_name', 'last_name', 'current_group', 'user',]
         attrs = {
             'class': 'table table-hover',
         }

@@ -21,7 +21,7 @@ class StudentTable(tables.Table):
     )
     class Meta:
         model = Student
-        fields = ['id','first_name','last_name','user','current_group','created_at','updated_at']
+        fields = ['id','first_name','last_name','user','current_group',]
         attrs = {
             'class': 'table table-hover',
         }
