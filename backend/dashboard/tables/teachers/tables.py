@@ -20,7 +20,7 @@ class TeacherTable(tables.Table):
     )
     class Meta:
         model = User
-        fields = ["id","username", "email", "approval_status", "date_joined"]
+        fields = ["id","username", "email", "approval_status", ]
         attrs = {
             'class': 'table table-hover',
         }
@@ -32,4 +32,4 @@ class TeacherTable(tables.Table):
 class TeacherFilter(django_filters.FilterSet):
     class Meta:
         model = User
-        fields = ["id","username", "email", "approval_status", "date_joined"]
+        fields = ["id","username", "email", "approval_status", ]

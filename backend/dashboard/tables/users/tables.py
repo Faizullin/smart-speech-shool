@@ -27,7 +27,7 @@ class UserTable(tables.Table):
     
     class Meta:
         model = User
-        fields = ("id","username", "email", "approval_status", "date_joined" )
+        fields = ("id","username", "email", "approval_status",  )
         attrs = {
             'class': 'table table-hover',
         }

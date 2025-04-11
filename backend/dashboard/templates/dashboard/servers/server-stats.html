@@ -284,7 +284,7 @@
                                                                     <th class="border-top-0">Id</th>
                                                                     <th class="border-top-0">{{ _("Name") }}</th>
                                                                     <th class="border-top-0">{{ _("Email") }}</th>
-                                                                    <th class="border-top-0">{{ _("Timestamp") }}</th>
+                                                                    {# <th class="border-top-0">{{ _("Timestamp") }}</th> #}
                                                                 </tr><!--end tr-->
                                                             </thead>
                                                             <tbody>
@@ -293,7 +293,6 @@
                                                                     <td>{{ user.id }}</td>
                                                                     <td>{{ user.username }}<small class="text-muted">(52%)</small></td>                                   
                                                                     <td>{{ user.email }}</td>
-                                                                    <td>{{ user.date_joined }}</td>
                                                                 </tr>
                                                                 {% endfor %}              
                                                             </tbody>
